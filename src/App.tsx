@@ -1,12 +1,11 @@
-import { Button } from "@/components/ui/button"
+import MainLayout from "./components/layout/MainLayout"
 
 function App() {
 
   return (
-    <>
-       <Button className="text-3xl text-red-200">Click me</Button>
-       <h2 className="text-3xl text-red-600">Hi There</h2>
-    </>
+    <div className="max-w-[1200px] mx-auto">
+      <MainLayout />
+    </div>
   )
 }
 
