@@ -3,6 +3,7 @@ import About from "@/pages/about/About";
 import AllProducts from "@/pages/allProducts/AllProducts";
 import Home from "@/pages/home/Home";
 import Login from "@/pages/login/Login";
+import ProductDetails from "@/pages/productDetails/ProductDetails";
 import { createBrowserRouter } from "react-router-dom";
 
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
             {
                 path : '/allProducts',
                 element : <AllProducts/>
+            },
+            {
+                path : '/productDetails/:id',
+                element : <ProductDetails/>
             },
             {
                 path : '/login',

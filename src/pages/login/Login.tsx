@@ -2,6 +2,7 @@
 import { useLoginMutation } from "@/redux/features/auth/authApi";
 import { setUser } from "@/redux/features/auth/authSlice";
 import { useAppDispatch } from "@/redux/hook";
+import { TUser } from "@/types";
 import { verifyToken } from "@/utils/verifyToken";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -36,19 +37,17 @@ const Login = () => {
                 password: data?.password
             }
             const res = await login(userInfo).unwrap();
-
-            const token = res.data.accessToken;
-            const user = verifyToken(token);
+            const user = verifyToken(res?.data?.accessToken) as TUser;
 
             dispatch(setUser({
                 user: user,
                 token: res?.data?.accessToken
             }))
-            toast.success('Logged in', { id: toastId, duration: 2000 });
+            toast.success('Logged in', { id: toastId});
             navigate('/');
         } catch (error) {
             console.log(error);
-            toast.error('Something went wrong', { id: toastId, duration: 2000 });
+            toast.error('Something went wrong', { id: toastId});
 
         }
     };

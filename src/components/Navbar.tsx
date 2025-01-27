@@ -47,7 +47,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout())
-    toast.success('Logged Out',{duration : 2000})
+    toast.success('Logged Out')
   }
 
 
