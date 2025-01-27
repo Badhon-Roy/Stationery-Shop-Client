@@ -5,15 +5,15 @@ import { Card } from "./ui/card";
 const Banner = () => {
     return (
         <div className="relative overflow-hidden bg-white">
-            <div className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-                <div className="grid gap-12 lg:grid-cols-2 lg:gap-8 items-center">
+            <div className="px-4 mx-auto sm:px-6 lg:px-8">
+                <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
                     <div className="max-w-2xl">
-                        <h1 className="text-4xl font-bold tracking-tight sm:text-6xl mb-6">
+                        <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl ">
                             Premium <span className="primaryColor">Stationery</span>
                             <br />
                             Supplies
                         </h1>
-                        <p className="text-muted-foreground text-lg mb-8">
+                        <p className="mb-8 text-lg text-muted-foreground">
                             Discover our curated collection of high-quality stationery essentials. From premium notebooks to luxury
                             pens, we have everything you need to make your ideas come to life.
                         </p>
@@ -24,7 +24,7 @@ const Banner = () => {
 
 
 
-                        <div className="mt-12 grid gap-6 sm:grid-cols-2">
+                        <div className="grid gap-6 mt-12 sm:grid-cols-2">
                             {/* Card 1 */}
                             <Card className="p-6 bg-gradient-to-br from-[#fb5770] via-[#ff7e91] to-[#ffb8c3] shadow-lg rounded-xl">
                                 <div className="flex items-center gap-3 mb-3">
@@ -46,7 +46,7 @@ const Banner = () => {
                                     </div>
                                     <span className="text-3xl font-bold text-white">15K+</span>
                                 </div>
-                                <p className="text-lg text-white font-bold">Happy Customers</p>
+                                <p className="text-lg font-bold text-white">Happy Customers</p>
                             </Card>
 
                             {/* Card 2 */}
@@ -70,14 +70,14 @@ const Banner = () => {
                                     </div>
                                     <span className="text-3xl font-bold text-white">1000+</span>
                                 </div>
-                                <p className="text-lg text-white font-bold">Products Available</p>
+                                <p className="text-lg font-bold text-white">Products Available</p>
                             </Card>
                         </div>
 
                     </div>
 
                     <div className="relative lg:h-full min-h-[400px]">
-                        <div className="absolute inset-0 bg-primary/10 rounded-full"></div>
+                        <div className="absolute inset-0 rounded-full bg-primary/10"></div>
                         <div className="relative z-10 flex items-center justify-center h-full">
                             <img
                                 src="https://img.freepik.com/free-vector/different-stationery-items-blue-plastic-glass-composition-red-circle-white-background-realistic-vector-illustration_1284-19882.jpg?ga=GA1.1.1520422090.1699525632&semt=ais_hybrid"
