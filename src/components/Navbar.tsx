@@ -40,7 +40,7 @@ const Navbar = () => {
       element: "Shop"
     },
     {
-      path: '/dashboard',
+      path:  `/dashboard/${(user as TUser)?.role}`,
       element: "Dashboard"
     },
   ]

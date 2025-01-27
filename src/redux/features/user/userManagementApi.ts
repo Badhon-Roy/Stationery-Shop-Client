@@ -36,7 +36,22 @@ const userManagementApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['user']
         }),
+        updateUserRole: builder.mutation({
+            query: (args) => ({
+                url: `/auth/update-role/${args.id}`,
+                method: "PUT",
+                body: args.data
+            }),
+            invalidatesTags: ['user']
+        }),
+        deleteUser: builder.mutation({
+            query: (args) => ({
+                url: `/users/delete-user/${args.id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['user']
+        }),
     })
 })
 
-export const { useGetAllUserQuery, useCreateUserMutation } = userManagementApi;
+export const { useGetAllUserQuery, useCreateUserMutation , useDeleteUserMutation , useUpdateUserRoleMutation} = userManagementApi;

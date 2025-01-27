@@ -7,7 +7,7 @@ import { Navigate } from "react-router-dom";
 
 type TProtectedRoute = {
     children: ReactNode;
-    role: string | undefined
+    role?: string | undefined
 }
 
 const ProtectedRoute = ({ children, role }: TProtectedRoute) => {
