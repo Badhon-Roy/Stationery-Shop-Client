@@ -8,7 +8,7 @@ const FeaturedProducts = () => {
         return <Loading/>
     }
     return (
-        <div className="my-8">
+        <div className="px-4 my-8 lg:px-0">
             <h2 className="font-bold sectionTitle">Our <span className="primaryColor">Featured</span> Products</h2>
             <p className="sectionSubtitle">Explore our handpicked collection of top-quality products, designed to meet <br /> your needs and enhance your lifestyle effortlessly</p>
             <div className="grid grid-cols-1 gap-5 lg:grid-cols-4 md:grid-cols-2">

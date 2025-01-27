@@ -5,7 +5,7 @@ import { Card } from "./ui/card";
 const Banner = () => {
     return (
         <div className="relative overflow-hidden bg-white">
-            <div className="px-4 mx-auto sm:px-6 lg:px-8">
+            <div className="px-4 mx-auto lg:px-0">
                 <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-8">
                     <div className="max-w-2xl">
                         <h1 className="mb-6 text-4xl font-bold tracking-tight sm:text-6xl ">
