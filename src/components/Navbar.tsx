@@ -3,10 +3,15 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
 import OutlineButton from "./customButton/OutlineButton";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import { logout, selectCurrentToken } from "@/redux/features/auth/authSlice";
+import { verifyToken } from "@/utils/verifyToken";
+import { TUser } from "@/types";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const dispatch = useAppDispatch();
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -15,24 +20,35 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const token = useAppSelector(selectCurrentToken)
+  let user;
+  if (token) {
+    user = verifyToken(token)
+  }
+
   const navbarLinks = [
     {
-        path : '/',
-        element : "Home"
+      path: '/',
+      element: "Home"
     },
     {
-        path : '/about',
-        element : "About"
+      path: '/about',
+      element: "About"
     },
     {
-        path : '/shop',
-        element : "Shop"
+      path: '/shop',
+      element: "Shop"
     },
     {
-        path : '/dashboard',
-        element : "Dashboard"
+      path: '/dashboard',
+      element: "Dashboard"
     },
   ]
+
+  const handleLogout = () => {
+    dispatch(logout())
+    toast.success('Logged Out',{duration : 2000})
+  }
 
 
 
@@ -57,8 +73,7 @@ const Navbar = () => {
                 key={index}
                 to={item?.path}
                 className={({ isActive }) =>
-                  `underline-animation ${
-                    isActive ? "text-[#fb5770] font-bold" : ""
+                  `underline-animation ${isActive ? "text-[#fb5770] font-bold" : ""
                   }`
                 }
               >
@@ -68,7 +83,7 @@ const Navbar = () => {
           </div>
 
           {/* Search Bar */}
-          <form className="flex items-center border-2 border-[#fb5770] rounded-md" style={{borderRadius: '4px'}}>
+          <form className="flex items-center border-2 border-[#fb5770] rounded-md" style={{ borderRadius: '4px' }}>
             <input
               type="text"
               placeholder="Search..."
@@ -104,10 +119,23 @@ const Navbar = () => {
                 2
               </p>
             </Link>
-            <Link
-              to={"/signIn"}>
-                <OutlineButton text="Sign In"/>
-            </Link>
+            {
+              user && (user as TUser)?.email ? (
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    borderRadius: "8px",
+                  }}
+                  className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-4 rounded-lg h-11 focus:outline-none"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login">
+                  <OutlineButton text="Login" />
+                </Link>
+              )
+            }
           </div>
         </div>
       </div>
@@ -124,9 +152,8 @@ const Navbar = () => {
 
         {/* Drawer */}
         <div
-          className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed top-0 right-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {/* Close Button */}
           <button
@@ -138,19 +165,18 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <nav className="flex flex-col px-6 mt-20 space-y-6 font-bold">
-            {["Home", "Shop", "About", "Favorite Cards", "My Cart", "Sign In"].map(
+            {navbarLinks?.map(
               (item, index) => (
                 <NavLink
                   key={index}
-                  to={`/${item.toLowerCase().replace(/\s+/g, "")}`}
+                  to={item?.path}
                   onClick={handleNavClick}
                   className={({ isActive }) =>
-                    `underline-animation ${
-                      isActive ? "text-[#fb5770] font-bold" : ""
+                    `underline-animation ${isActive ? "text-[#fb5770] font-bold" : ""
                     }`
                   }
                 >
-                  {item}
+                  {item?.element}
                 </NavLink>
               )
             )}
