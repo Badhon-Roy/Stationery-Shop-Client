@@ -50,8 +50,11 @@ const GetAllProducts = () => {
         return <Loading />
     }
     return (
-        <div className="px-4 my-8">
-            <h2 className="font-bold text-center">Our <span className="primaryColor">All</span> Products</h2>
+        <div className="px-4">
+             <div>
+                <h2 className="dashboardTitle">View All <span className="primaryColor">Stationery</span> Products</h2>
+                <p className="dashboardSubtitle">Manage and explore your entire stationery inventory in one place.</p>
+            </div>
             <Table>
                 <TableHeader>
                     <TableRow>

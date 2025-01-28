@@ -27,6 +27,20 @@ body {
     font-weight: 500;
     margin-bottom: 30px;
 }
+.dashboardTitle {
+    font-size: 18px;
+    text-align: center;
+    color: #3f4343;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.dashboardSubtitle {
+    font-size: 8px;
+    color: #3f4343;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
 
 @media (min-width: 576px) { 
     .sectionTitle {
@@ -34,6 +48,12 @@ body {
     }
     .sectionSubtitle {
         font-size: 18px;
+    }
+    .dashboardTitle {
+        font-size: 20px;
+    }
+    .dashboardSubtitle {
+        font-size: 9px;
     }
 }
 
@@ -44,6 +64,12 @@ body {
     .sectionSubtitle {
         font-size: 20px;
     }
+    .dashboardTitle {
+        font-size: 23px;
+    }
+    .dashboardSubtitle {
+        font-size: 10px;
+    }
 }
 
 @media (min-width: 1024px) {
@@ -52,6 +78,12 @@ body {
     }
     .sectionSubtitle {
         font-size: 22px;
+    }
+    .dashboardTitle {
+        font-size: 25px;
+    }
+    .dashboardSubtitle {
+        font-size: 11px;
     }
 }
 

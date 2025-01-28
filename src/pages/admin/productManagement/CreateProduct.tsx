@@ -19,21 +19,21 @@ const CreateProduct = () => {
         try {
             const productInfo = {
                 ...data,
-                price : Number(data?.price),
-                quantity : Number(data?.quantity),
+                price: Number(data?.price),
+                quantity: Number(data?.quantity),
                 inStock: true
-                
-              }
+
+            }
             const res = (await addProduct(productInfo)) as TResponse<any>
             console.log(res);
-            if(res?.data?.success){
-                toast.success(res?.data?.message, { id: toastId});
-            }else if(res?.error){
-                toast.error('Something went wrong. Please try again!', { id: toastId});
+            if (res?.data?.success) {
+                toast.success(res?.data?.message, { id: toastId });
+            } else if (res?.error) {
+                toast.error('Something went wrong. Please try again!', { id: toastId });
             }
         } catch (error) {
             console.log(error);
-            toast.error('Something went wrong', { id: toastId});
+            toast.error('Something went wrong', { id: toastId });
 
         }
     };
@@ -42,6 +42,10 @@ const CreateProduct = () => {
 
     return (
         <div>
+            <div>
+                <h2 className="dashboardTitle">Add New  <span className="primaryColor">Stationery </span> Product</h2>
+                <p className="dashboardSubtitle">Effortlessly manage and add products to your stationery inventory.</p>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="items-center justify-between gap-4 md:flex">
                     {/* Name Field */}

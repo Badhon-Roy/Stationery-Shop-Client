@@ -1,6 +1,7 @@
 import App from "@/App";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import About from "@/pages/about/About";
+import AdminDashboard from "@/pages/admin/AdminDashboard";
 import CreateProduct from "@/pages/admin/productManagement/CreateProduct";
 import GetAllProducts from "@/pages/admin/productManagement/GetAllProducts";
 import UpdateProduct from "@/pages/admin/productManagement/updateProduct";
@@ -49,6 +50,15 @@ const router = createBrowserRouter([
         path: '/dashboard/:role',
         element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
         children: [
+            // {
+            //     path: '',
+            //     element: <Navigate to="/dashboard/admin/adminDashboard" replace />,
+            // },
+            {
+                path: 'adminDashboard',
+                index: true,
+                element: <ProtectedRoute role="admin"><AdminDashboard /></ProtectedRoute>
+            },
             {
                 path: 'createProduct',
                 element: <ProtectedRoute role="admin"><CreateProduct /></ProtectedRoute>

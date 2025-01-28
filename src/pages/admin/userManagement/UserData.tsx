@@ -81,7 +81,10 @@ const UserData = () => {
 
     return (
         <div>
-            <h2 className="text-xl font-bold text-center">All User</h2>
+             <div>
+                <h2 className="dashboardTitle">View and <span className="primaryColor">Manage</span> Users</h2>
+                <p className="dashboardSubtitle">Easily access and control all user details from a single dashboard.</p>
+            </div>
               <Table>
                 <TableHeader>
                     <TableRow>

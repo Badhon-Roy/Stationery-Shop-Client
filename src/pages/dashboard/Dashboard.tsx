@@ -26,12 +26,16 @@ const Dashboard = () => {
 
     const adminPaths = [
         {
+            path: `/dashboard/${role}/adminDashboard`,
+            element: "Dashboard",
+        },
+        {
             path: `/dashboard/${role}/createProduct`,
             element: "Create Product",
         },
         {
             path: `/dashboard/${role}/getAllProducts`,
-            element: "Get All Products",
+            element: "All Products",
         },
         {
             path: `/dashboard/${role}/allUser`,
@@ -44,6 +48,10 @@ const Dashboard = () => {
     ];
 
     const userPaths = [
+        {
+            path: `/dashboard/${role}`,
+            element: "Dashboard",
+        },
         {
             path: `/dashboard/${role}/viewOrders`,
             element: "View Orders",
@@ -61,10 +69,10 @@ const Dashboard = () => {
     const paths = (user as TUser)?.role === "admin" ? adminPaths : userPaths;
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex min-h-screen max-w-[1200px] mx-auto">
             {/* Drawer */}
             <aside
-                className={`fixed inset-y-0 left-0 z-50 lg:w-64 md:w-48 bg-[#fb5770] text-white transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+                className={`fixed inset-y-0 left-0 z-50 xl:w-64 lg:w-48 md:w-48 bg-[#fb5770] text-white transform ${isOpen ? "translate-x-0" : "-translate-x-full"
                     } transition-transform lg:translate-x-0`}
             >
                 <div className="p-4">
@@ -108,7 +116,7 @@ const Dashboard = () => {
                 >
                     <FaBars />
                 </button>
-                <div className="max-w-[800px] mx-auto bg-white shadow-lg rounded-lg p-6 min-h-screen">
+                <div className="xl:max-w-[950px] lg:max-w-[800px] ms-auto bg-white shadow-lg rounded-lg p-6 min-h-screen">
                     <Outlet />
                 </div>
             </main>

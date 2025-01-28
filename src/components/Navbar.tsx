@@ -8,10 +8,27 @@ import { logout, selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { verifyToken } from "@/utils/verifyToken";
 import { TUser } from "@/types";
 import { toast } from "sonner";
+import { useGetAddedCartQuery } from "@/redux/features/product/addedCartManagementApi";
+import Loading from "./loading/Loading";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const token = useAppSelector(selectCurrentToken);
+  let user;
+  if (token) {
+    user = verifyToken(token)
+  }
+
+  const { data : addedCartProduct, isLoading: addedCartLoading } = useGetAddedCartQuery(((user as TUser)?.email));
+
+  if (addedCartLoading) {
+    return <Loading />
+  }
+
+
+
+
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -20,11 +37,7 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
-  const token = useAppSelector(selectCurrentToken)
-  let user;
-  if (token) {
-    user = verifyToken(token)
-  }
+
 
   const navbarLinks = [
     {
@@ -40,7 +53,7 @@ const Navbar = () => {
       element: "Shop"
     },
     {
-      path:  `/dashboard/${(user as TUser)?.role}`,
+      path: `/dashboard/${(user as TUser)?.role}`,
       element: "Dashboard"
     },
   ]
@@ -116,7 +129,7 @@ const Navbar = () => {
                 alt="Cart"
               />
               <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
-                2
+                {addedCartProduct?.data?.length || 0}
               </p>
             </Link>
             {

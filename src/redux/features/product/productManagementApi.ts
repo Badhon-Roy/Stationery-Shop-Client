@@ -8,36 +8,66 @@ const productManagementApi = baseApi.injectEndpoints({
 
         // product related
 
+        // // get all product
+        // getAllProducts: builder.query({
+        //     query: (args) => {
+        //         const params = new URLSearchParams();
+        //         if (args) {
+        //             args.forEach((item: TQueryParam) => {
+        //                 params.append(item.name, item.value as string)
+        //             })
+        //         }
+
+        //         return {
+        //             url: '/products/get-product',
+        //             method: "GET",
+        //             params: params
+        //         }
+        //     },
+        //     providesTags: ['product'],
+        //     transformResponse: (response: TResponseRedux<TProduct[]>) => {
+        //         return {
+        //             data: response?.data,
+        //             meta: response?.meta
+        //         }
+        //     }
+        // }),
+
         // get all product
         getAllProducts: builder.query({
             query: (args) => {
-                const params = new URLSearchParams();
+                // Build dynamic URL query parameters
+                let url = '/products/get-product';
                 if (args) {
+                    const params = new URLSearchParams();
                     args.forEach((item: TQueryParam) => {
-                        params.append(item.name, item.value as string)
-                    })
+                        if (item.value) {
+                            params.append(item.name, item.value as string);
+                        }
+                    });
+                    url += `?${params.toString()}`;
                 }
-
+                console.log(url);
                 return {
-                    url: '/products/get-product',
+                    url: url,
                     method: "GET",
-                    params: params
-                }
+                };
             },
             providesTags: ['product'],
             transformResponse: (response: TResponseRedux<TProduct[]>) => {
                 return {
                     data: response?.data,
-                    meta: response?.meta
-                }
-            }
+                    meta: response?.meta,
+                };
+            },
         }),
+
 
         // get single product
         getSingleProduct: builder.query({
             query: (args) => ({
-                    url: `/products/get-product/${args?.productId}`,
-                    method: "GET"
+                url: `/products/get-product/${args?.productId}`,
+                method: "GET"
             }),
             providesTags: ['product'],
             transformResponse: (response: TResponseRedux<TProduct>) => {
@@ -75,4 +105,4 @@ const productManagementApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useGetAllProductsQuery, useAddProductMutation, useUpdateProductMutation, useGetSingleProductQuery , useDeleteProductMutation} = productManagementApi;
+export const { useGetAllProductsQuery, useAddProductMutation, useUpdateProductMutation, useGetSingleProductQuery, useDeleteProductMutation } = productManagementApi;

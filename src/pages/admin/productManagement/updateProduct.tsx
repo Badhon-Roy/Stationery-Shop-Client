@@ -21,12 +21,12 @@ const UpdateProduct = () => {
         register,
         handleSubmit,
         formState: { errors },
-        reset, 
+        reset,
     } = useForm<TProduct>();
 
     useEffect(() => {
         if (data?.data) {
-            reset(data.data); 
+            reset(data.data);
         }
     }, [data, reset]);
 
@@ -67,7 +67,10 @@ const UpdateProduct = () => {
 
     return (
         <div>
-            <h2 className="text-center">Update Product</h2>
+            <div>
+                <h2 className="dashboardTitle">Update<span className="primaryColor"> Stationery </span> Product</h2>
+                <p className="dashboardSubtitle">Edit and modify product details to keep your inventory up-to-date.</p>
+            </div>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <div className="items-center justify-between gap-4 md:flex">
                     {/* Name Field */}
@@ -251,11 +254,11 @@ const UpdateProduct = () => {
                         )}
                     </div>
                     <button
-                    type="submit"
-                    className="w-full bg-[#fb5770] text-white font-medium py-2 rounded-lg hover:bg-[#e14b63] focus:outline-none"
-                >
-                    Update Product
-                </button>
+                        type="submit"
+                        className="w-full bg-[#fb5770] text-white font-medium py-2 rounded-lg hover:bg-[#e14b63] focus:outline-none"
+                    >
+                        Update Product
+                    </button>
                 </div>
             </form>
         </div>

@@ -98,6 +98,18 @@
       "description": "Compact and precise wireless mouse for everyday use.",
       "quantity": 80,
       "inStock": true
+    },
+    {
+      "name": "Gel Pen",
+      "brand": "Uni-ball",
+      "image": "https://img.freepik.com/free-photo/3d-rendering-pen-ai-generated_23-2150695569.jpg?ga=GA1.1.1520422090.1699525632&semt=ais_hybrid",
+      "price": 290,
+      "category": "Writing",
+      "description": "Smooth-writing gel pen with vibrant ink for clear, bold lines.",
+      "quantity": 150,
+      "inStock": true
     }
+    
+    
   ]
   
