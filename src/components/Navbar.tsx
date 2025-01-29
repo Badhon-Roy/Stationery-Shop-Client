@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { MdOutlineMenu } from "react-icons/md";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import OutlineButton from "./customButton/OutlineButton";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { logout, selectCurrentToken } from "@/redux/features/auth/authSlice";
@@ -14,19 +14,22 @@ import Loading from "./loading/Loading";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate()
   const token = useAppSelector(selectCurrentToken);
   let user;
   if (token) {
     user = verifyToken(token)
   }
 
-  const { data : addedCartProduct, isLoading: addedCartLoading } = useGetAddedCartQuery(((user as TUser)?.email));
-
+  const { data: addedCartProduct, isLoading: addedCartLoading } = useGetAddedCartQuery(((user as TUser)?.email));
+  // console.log(addedCartProduct?.data?.map(item => item.product?.map(id => console.log(id))))
+  const totalAddedCart = addedCartProduct?.data?.map((item : any)  => item.products?.length)[0]
+  
+  // console.log(addedCartProduct?.data?.map((item : any)  => item.product.length)[0]);
   if (addedCartLoading) {
     return <Loading />
   }
-
-
+ 
 
 
   const toggleDrawer = () => {
@@ -61,6 +64,7 @@ const Navbar = () => {
   const handleLogout = () => {
     dispatch(logout())
     toast.success('Logged Out')
+    navigate('/')
   }
 
 
@@ -129,7 +133,9 @@ const Navbar = () => {
                 alt="Cart"
               />
               <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
-                {addedCartProduct?.data?.length || 0}
+              {
+                (user as TUser)?.email ? `${totalAddedCart}` : 0
+              }
               </p>
             </Link>
             {

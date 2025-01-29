@@ -47,7 +47,6 @@ const productManagementApi = baseApi.injectEndpoints({
                     });
                     url += `?${params.toString()}`;
                 }
-                console.log(url);
                 return {
                     url: url,
                     method: "GET",

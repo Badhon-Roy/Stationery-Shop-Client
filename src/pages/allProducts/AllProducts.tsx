@@ -2,32 +2,58 @@ import ProductCart from "@/components/ProductCart";
 import { categoryOption } from "@/constants/category";
 import { useGetAllProductsQuery } from "@/redux/features/product/productManagementApi";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 type TQueryParam = {
     name: string;
     value: any;
 };
+interface SearchFormValues {
+    nameTerm: string;
+    brandTerm: string;
+    categoryTerm: string;
+  }
+
 const AllProducts = () => {
     // Properly type the state for search query
     const [searchQuery, setSearchQuery] = useState<TQueryParam[] | undefined>(undefined);
     const { data: stationeryProducts } = useGetAllProductsQuery(searchQuery); // Fetch data based on search query
-    const { register, handleSubmit, reset } = useForm();
+    const { register, handleSubmit} = useForm<SearchFormValues>();
     console.log(searchQuery);
     // Handle form submission
-    const onSubmit = (data: { nameTerm: string, brandTerm: string, categoryTerm: string }) => {
+    // const onSubmit: SubmitHandler<SearchFormValues> = (data) => {
+    //     console.log(data);
+        
+    //     // Build query args dynamically for the API
+    //     const args: TQueryParam[] | undefined =
+    //       data.nameTerm || data.brandTerm || data.categoryTerm
+    //         ? [
+    //             { name: "name", value: data.nameTerm },
+    //             { name: "brand", value: data.brandTerm },
+    //             { name: "category", value: data.categoryTerm },
+    //           ]
+    //         : undefined;
+      
+    //     console.log(args);
+    //     setSearchQuery(args);
+    //   };
+
+
+    const onSubmit: SubmitHandler<SearchFormValues> = (data) => {
         console.log(data);
-        // Build query args dynamically for the API
-        const args: TQueryParam[] | undefined = data?.nameTerm || data?.brandTerm || data?.categoryTerm
+      
+        const args: TQueryParam[] | undefined =
+          data.nameTerm || data.brandTerm || data.categoryTerm
             ? [
                 { name: "name", value: data.nameTerm },
                 { name: "brand", value: data.brandTerm },
                 { name: "category", value: data.categoryTerm },
-
-            ]
+              ]
             : undefined;
+      
         console.log(args);
         setSearchQuery(args);
-    };
+      };
+
 
     return (
         <div className="px-4 my-8">

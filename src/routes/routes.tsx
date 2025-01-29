@@ -1,6 +1,7 @@
 import App from "@/App";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import About from "@/pages/about/About";
+import AddedCards from "@/pages/addedCards/AddedCards";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import CreateProduct from "@/pages/admin/productManagement/CreateProduct";
 import GetAllProducts from "@/pages/admin/productManagement/GetAllProducts";
@@ -10,8 +11,10 @@ import AllProducts from "@/pages/allProducts/AllProducts";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Home from "@/pages/home/Home";
 import Login from "@/pages/login/Login";
+import Order from "@/pages/order/Order";
 import ProductDetails from "@/pages/productDetails/ProductDetails";
 import SignUp from "@/pages/signUp/SignUp";
+import OrderVerify from "@/pages/verify/OrderVerify";
 import { createBrowserRouter } from "react-router-dom";
 
 
@@ -35,6 +38,18 @@ const router = createBrowserRouter([
             {
                 path: '/productDetails/:id',
                 element: <ProductDetails />
+            },
+            {
+                path: '/addedCards',
+                element: <AddedCards />
+            },
+            {
+                path: '/order',
+                element: <Order />
+            },
+            {
+                path: '/orders/verify',
+                element: <OrderVerify />
             },
             {
                 path: '/login',
