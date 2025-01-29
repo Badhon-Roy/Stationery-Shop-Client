@@ -62,7 +62,7 @@ const AllProducts = () => {
             <div className="my-4">
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="flex items-center gap-4 rounded-md"
+                    className="items-center gap-4 rounded-md md:flex"
                     style={{ borderRadius: "4px" }}
                 >
                     <input

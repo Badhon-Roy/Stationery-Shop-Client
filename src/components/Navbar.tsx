@@ -199,12 +199,23 @@ const Navbar = () => {
                 </NavLink>
               )
             )}
-            <button
-              onClick={handleNavClick}
-              className="w-full py-2 text-white bg-[#fb5770] rounded-lg font-bold hover:bg-[#e04d62]"
-            >
-              Sign Out
-            </button>
+                 {
+              user && (user as TUser)?.email ? (
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    borderRadius: "8px",
+                  }}
+                  className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-4 rounded-lg h-11 focus:outline-none"
+                >
+                  Logout
+                </button>
+              ) : (
+                <Link to="/login">
+                  <OutlineButton text="Login" />
+                </Link>
+              )
+            }
           </nav>
         </div>
       </div>
