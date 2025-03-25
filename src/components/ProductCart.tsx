@@ -18,25 +18,25 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
 
     const token = useAppSelector(selectCurrentToken);
     let user: TUser | undefined;
-    
+
     if (token) {
         user = jwtDecode(token);
     }
-    
+
     const handleAddToCart = async (e: React.MouseEvent) => {
         e.preventDefault();
         if (!user || !((user as TUser)?.email)) {
             navigate("/login", { state: { from: location } });
         } else {
             const cartInfo = {
-                email : ((user as TUser)?.email),
-                product : _id
+                email: ((user as TUser)?.email),
+                product: _id
             }
             const res = await addToCartProduct(cartInfo)
-            if(res?.data?.success){
+            if (res?.data?.success) {
                 toast.success(res?.data?.message)
-            }else if(res?.error){
-                toast.error('Something went wrong!') 
+            } else if (res?.error) {
+                toast.error('Something went wrong!')
             }
         }
     };
@@ -48,7 +48,10 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
                     <img src={image} alt={name} className="object-cover w-full h-40 rounded-t-lg" />
 
                     <div className="p-6">
-                        <h2 className="mb-2 text-2xl font-bold text-[#3f4343]">{name}</h2>
+                        <h2 className="mb-2 text-xl font-bold text-[#3f4343]">
+                            {name.length > 20 ? name.slice(0, 20
+                            ) + "..." : name}
+                        </h2>
                         <p className="text-sm text-gray-600">{description}</p>
                         <p className="mt-2 text-xl font-semibold primaryColor">Price: {price} tk</p>
 

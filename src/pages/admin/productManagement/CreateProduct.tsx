@@ -1,4 +1,4 @@
-import { categoryOption } from "@/constants/category";
+import { useGetAllCategoryQuery } from "@/redux/features/category/categoryManagementApi";
 import { useAddProductMutation } from "@/redux/features/product/productManagementApi";
 import { TProduct, TResponse } from "@/types";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 const CreateProduct = () => {
     const [addProduct] = useAddProductMutation();
+    const {data : categories} = useGetAllCategoryQuery(undefined)
     const {
         register,
         handleSubmit,
@@ -140,9 +141,9 @@ const CreateProduct = () => {
                             <option value="" disabled>
                                 Select a category
                             </option>
-                            {categoryOption.map((option) => (
-                                <option key={option.value} value={option.value}>
-                                    {option.label}
+                            {categories?.data?.map((option) => (
+                                <option key={option?.name} value={option?._id}>
+                                    {option?.name}
                                 </option>
                             ))}
                         </select>
