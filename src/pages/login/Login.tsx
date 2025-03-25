@@ -18,11 +18,14 @@ const Login = () => {
     const [login] = useLoginMutation();
     const navigate = useNavigate();
     const location = useLocation();
+    const form = useForm<LoginFormInputs>();
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<LoginFormInputs>();
+        setValue
+    } = form;
 
     const from = location.state?.from?.pathname || "/";
 
@@ -41,14 +44,25 @@ const Login = () => {
                 user: user,
                 token: res?.data?.accessToken
             }))
-            toast.success('Logged in', { id: toastId});
+            toast.success('Logged in', { id: toastId });
             navigate(from, { replace: true });
         } catch (error) {
             console.log(error);
-            toast.error('Something went wrong', { id: toastId});
+            toast.error('Something went wrong', { id: toastId });
 
         }
     };
+
+    const handleAdminLogin = () => {
+        setValue("email", "badhon.roy@gmail.com");
+        setValue("password", "123456");
+        form.handleSubmit(onSubmit)();
+    }
+    const handleUserLogin = () => {
+        setValue("email", "user@gmail.com");
+        setValue("password", "123456");
+        form.handleSubmit(onSubmit)();
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -122,8 +136,25 @@ const Login = () => {
                     >
                         Login
                     </button>
+
                 </form>
-                    <p className="mt-2 text-sm text-end">Don't have an account <Link className="font-medium text-[#e14b63] underline"  to='/signUp'>Sing Up</Link></p>
+                <p className="mt-2 text-sm text-end">Don't have an account <Link className="font-medium text-[#e14b63] underline" to='/signUp'>Sing Up</Link></p>
+                <div className="flex justify-between gap-6 my-4">
+                    <button
+                        onClick={handleAdminLogin}
+                        type="submit"
+                        className="w-full bg-[#fb5770] text-white font-medium py-2 rounded-lg hover:bg-[#e14b63] focus:outline-none"
+                    >
+                        As a Admin
+                    </button>
+                    <button
+                        onClick={handleUserLogin}
+                        type="submit"
+                        className="w-full bg-[#fb5770] text-white font-medium py-2 rounded-lg hover:bg-[#e14b63] focus:outline-none"
+                    >
+                        As a User
+                    </button>
+                </div>
             </div>
         </div>
     );

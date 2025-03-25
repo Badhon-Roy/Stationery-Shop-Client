@@ -18,7 +18,6 @@ const AllProducts = () => {
     const [searchQuery, setSearchQuery] = useState<TQueryParam[] | undefined>(undefined);
     const { data: stationeryProducts } = useGetAllProductsQuery(searchQuery); // Fetch data based on search query
     const { register, handleSubmit} = useForm<SearchFormValues>();
-    console.log(searchQuery);
     // Handle form submission
     // const onSubmit: SubmitHandler<SearchFormValues> = (data) => {
     //     console.log(data);

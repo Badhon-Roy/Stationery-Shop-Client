@@ -23,13 +23,13 @@ const Navbar = () => {
 
   const { data: addedCartProduct, isLoading: addedCartLoading } = useGetAddedCartQuery(((user as TUser)?.email));
   // console.log(addedCartProduct?.data?.map(item => item.product?.map(id => console.log(id))))
-  const totalAddedCart = addedCartProduct?.data?.map((item : any)  => item.products?.length)[0]
-  
+  const totalAddedCart = addedCartProduct?.data?.map((item: any) => item.products?.length)[0]
+
   // console.log(addedCartProduct?.data?.map((item : any)  => item.product.length)[0]);
   if (addedCartLoading) {
     return <Loading />
   }
- 
+
 
 
   const toggleDrawer = () => {
@@ -72,12 +72,12 @@ const Navbar = () => {
   return (
     <>
       {/* Desktop Navbar */}
-      <div className="sticky top-0 z-40 hidden bg-white shadow-md lg:block">
-        <div className="navbar max-w-[1200px] mx-auto flex items-center justify-between px-6">
+      <div className="sticky top-0 z-40 hidden py-2 bg-white shadow-md lg:block">
+        <div className="container flex items-center justify-between px-6 mx-auto navbar">
           {/* Logo */}
           <Link to={"/"} className="flex items-center">
             <img
-              className="w-[90px] h-[60px] object-cover"
+              className="w-[100px] h-[60px] object-cover"
               src="https://s3-eu-west-1.amazonaws.com/tpd/logos/615476e378a1a8001de58b7f/0x0.png"
               alt="Logo"
             />
@@ -90,7 +90,7 @@ const Navbar = () => {
                 key={index}
                 to={item?.path}
                 className={({ isActive }) =>
-                  `underline-animation ${isActive ? "text-[#fb5770] font-bold" : ""
+                  `underline-animation ${isActive ? "text-[#fb5770] font-bold text-lg" : "text-lg"
                   }`
                 }
               >
@@ -115,40 +115,48 @@ const Navbar = () => {
           </form>
 
           {/* User Actions */}
-          <div className="flex items-center gap-4">
-            <Link to={"/favoriteCards"} className="relative">
-              <img
-                className="w-[30px]"
-                src="https://cdn-icons-png.flaticon.com/512/73/73814.png"
-                alt="Favorite"
-              />
-              <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
-                2
-              </p>
-            </Link>
-            <Link to={"/addedCards"} className="relative">
-              <img
-                className="w-[40px]"
-                src="https://static.vecteezy.com/system/resources/previews/019/787/018/non_2x/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png"
-                alt="Cart"
-              />
-              <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
-              {
-                (user as TUser)?.email ? `${totalAddedCart}` : 0
-              }
-              </p>
-            </Link>
+          <div>
             {
               user && (user as TUser)?.email ? (
-                <button
-                  onClick={handleLogout}
-                  style={{
-                    borderRadius: "8px",
-                  }}
-                  className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-4 rounded-lg h-11 focus:outline-none"
-                >
-                  Logout
-                </button>
+                <div className="flex items-center gap-4">
+                  <Link to={"/favoriteCards"} className="relative">
+                    <img
+                      className="w-[30px]"
+                      src="https://cdn-icons-png.flaticon.com/512/73/73814.png"
+                      alt="Favorite"
+                    />
+                    <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
+                      2
+                    </p>
+                  </Link>
+                  <Link to={"/addedCards"} className="relative">
+                    <img
+                      className="w-[40px]"
+                      src="https://static.vecteezy.com/system/resources/previews/019/787/018/non_2x/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png"
+                      alt="Cart"
+                    />
+
+                    {
+                      (user as TUser)?.email &&
+                      <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
+                        <p>
+                          {
+                            totalAddedCart > 0 ? `${totalAddedCart}` : '0'
+                          }
+                        </p>
+                      </p>
+                    }
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      borderRadius: "8px",
+                    }}
+                    className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-4 rounded-lg h-11 focus:outline-none"
+                  >
+                    Logout
+                  </button>
+                </div>
               ) : (
                 <Link to="/login">
                   <OutlineButton text="Login" />
@@ -199,7 +207,7 @@ const Navbar = () => {
                 </NavLink>
               )
             )}
-                 {
+            {
               user && (user as TUser)?.email ? (
                 <button
                   onClick={handleLogout}

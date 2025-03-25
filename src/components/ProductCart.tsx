@@ -45,7 +45,7 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
         <div>
             <Link ref={linkRef} to={`/productDetails/${_id}`}>
                 <div style={{ borderRadius: '8px' }} className="overflow-hidden transition-all duration-500 transform bg-white shadow-xl hover:scale-105 hover:shadow-2xl">
-                    <img src={image} alt={name} className="object-cover w-full h-32 rounded-t-lg" />
+                    <img src={image} alt={name} className="object-cover w-full h-40 rounded-t-lg" />
 
                     <div className="p-6">
                         <h2 className="mb-2 text-2xl font-bold text-[#3f4343]">{name}</h2>

@@ -36,7 +36,6 @@ const AddedCards = () => {
 
 
     const handleQuantityChange = async (productId: string, change: number) => {
-        console.log(change);
         if (!user) {
             console.error("User is not defined!");
             return;

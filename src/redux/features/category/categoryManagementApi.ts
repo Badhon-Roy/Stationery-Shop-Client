@@ -1,14 +1,15 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { TProduct, TQueryParam, TResponseRedux } from "@/types";
+import { TCategory, TQueryParam, TResponseRedux } from "@/types";
 
 
 
-const productManagementApi = baseApi.injectEndpoints({
+
+const categoryManagementApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getAllProducts: builder.query({
+        getAllCategory: builder.query({
             query: (args) => {
                 // Build dynamic URL query parameters
-                let url = '/products/get-product';
+                let url = '/categories';
                 if (args) {
                     const params = new URLSearchParams();
                     args.forEach((item: TQueryParam) => {
@@ -23,8 +24,8 @@ const productManagementApi = baseApi.injectEndpoints({
                     method: "GET",
                 };
             },
-            providesTags: ['product'],
-            transformResponse: (response: TResponseRedux<TProduct[]>) => {
+            providesTags: ['category'],
+            transformResponse: (response: TResponseRedux<TCategory[]>) => {
                 return {
                     data: response?.data,
                     meta: response?.meta,
@@ -33,46 +34,46 @@ const productManagementApi = baseApi.injectEndpoints({
         }),
 
 
-        // get single product
-        getSingleProduct: builder.query({
+        // get single category
+        getSingleCategory: builder.query({
             query: (args) => ({
-                url: `/products/get-product/${args?.productId}`,
+                url: `/categories/${args?.id}`,
                 method: "GET"
             }),
-            providesTags: ['product'],
-            transformResponse: (response: TResponseRedux<TProduct>) => {
+            providesTags: ['category'],
+            transformResponse: (response: TResponseRedux<TCategory>) => {
                 return {
                     data: response?.data,
                     meta: response?.meta
                 }
             }
         }),
-        addProduct: builder.mutation({
+        addCategory: builder.mutation({
             query: (data) => ({
-                url: '/products/create-product',
+                url: '/categories',
                 method: "POST",
                 body: data
             }),
-            invalidatesTags: ['product']
+            invalidatesTags: ['category']
         }),
 
-        updateProduct: builder.mutation({
+        updateCategory: builder.mutation({
             query: (args) => ({
-                url: `/products/update-product/${args.id}`,
+                url: `/categories/${args.id}`,
                 method: "PUT",
                 body: args.data
             }),
-            invalidatesTags: ['product']
+            invalidatesTags: ['category']
         }),
 
-        deleteProduct: builder.mutation({
+        deleteCategory: builder.mutation({
             query: (args) => ({
-                url: `/products/delete-product/${args.id}`,
+                url: `/categories/${args.id}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ['product']
+            invalidatesTags: ['category']
         }),
     })
 })
 
-export const { useGetAllProductsQuery, useAddProductMutation, useUpdateProductMutation, useGetSingleProductQuery, useDeleteProductMutation } = productManagementApi;
+export const { useGetAllCategoryQuery, useAddCategoryMutation, useDeleteCategoryMutation, useGetSingleCategoryQuery, useUpdateCategoryMutation } = categoryManagementApi;
