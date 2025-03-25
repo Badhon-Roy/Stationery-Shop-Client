@@ -6,12 +6,15 @@ import { useAppSelector } from "@/redux/hook";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
+import { FiHeart } from "react-icons/fi";
+import { useAddToFavoriteProductMutation } from "@/redux/features/product/addedFavoriteManagementApi";
 
 type TProductCart = Pick<TProduct, '_id' | 'name' | 'image' | 'price' | 'inStock' | 'description'>;
 
 const ProductCart = ({ product }: { product: TProductCart }) => {
     const { _id, name, image, inStock, description, price } = product;
     const [addToCartProduct] = useAddToCartProductMutation();
+    const [addToFavoriteProduct] = useAddToFavoriteProductMutation();
     const linkRef = useRef<HTMLAnchorElement>(null);
     const location = useLocation();
     const navigate = useNavigate();
@@ -41,10 +44,32 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
         }
     };
 
+    const handleAddToFavorite = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!user || !((user as TUser)?.email)) {
+            navigate("/login", { state: { from: location } });
+        } else {
+            const favoriteInfo = {
+                email: ((user as TUser)?.email),
+                product: _id
+            }
+            const res = await addToFavoriteProduct(favoriteInfo)
+            console.log(res);
+            if (res?.data?.success) {
+                toast.success(res?.data?.message)
+            } else if (res?.error) {
+                toast.error('Something went wrong!')
+            }
+        }
+    };
+
     return (
         <div>
             <Link ref={linkRef} to={`/productDetails/${_id}`}>
-                <div style={{ borderRadius: '8px' }} className="overflow-hidden transition-all duration-500 transform bg-white shadow-xl hover:scale-105 hover:shadow-2xl">
+                <div style={{ borderRadius: '8px' }} className="relative overflow-hidden transition-all duration-500 transform bg-white shadow-xl hover:scale-105 hover:shadow-2xl">
+                    <button onClick={handleAddToFavorite} className="absolute top-2 right-2 text-[#fb5770] text-xl font-bold">
+                        <FiHeart />
+                    </button>
                     <img src={image} alt={name} className="object-cover w-full h-40 rounded-t-lg" />
 
                     <div className="p-6">
@@ -82,7 +107,7 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
                             </span>
 
                             <button
-                                onClick={handleAddToCart} // Handle add to cart click
+                                onClick={handleAddToCart}
                                 style={{
                                     borderRadius: "8px",
                                 }}

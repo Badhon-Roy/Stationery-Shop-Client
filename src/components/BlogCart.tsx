@@ -1,6 +1,6 @@
 import { TBlog } from "./Blogs";
 
-const BlogCart = ({ image, title, description, date, author, isNew } : TBlog) => {
+const BlogCart = ({ image, title, date, author, isNew }: TBlog) => {
     return (
         <div className="relative overflow-hidden transition-all duration-300 bg-white shadow-lg group rounded-2xl hover:shadow-2xl">
             {/* Blog Image */}
@@ -27,9 +27,8 @@ const BlogCart = ({ image, title, description, date, author, isNew } : TBlog) =>
             {/* Blog Content */}
             <div className="p-6">
                 <h2 className="mb-2 text-2xl font-bold text-[#3f4343] group-hover:text-[#fb5770] transition-colors duration-300">
-                    {title}
+                    {title.length > 35 ? `${title?.slice(0,35)} ...` : title}
                 </h2>
-                <p className="mt-3 text-sm text-gray-600 line-clamp-3">{description}</p>
 
                 {/* Author and Date */}
                 <div className="flex items-center justify-between mt-5 text-sm text-gray-500">
@@ -55,14 +54,16 @@ const BlogCart = ({ image, title, description, date, author, isNew } : TBlog) =>
                     <span>{date}</span>
                 </div>
 
-                <button
-                    style={{
-                        borderRadius: "8px",
-                    }}
-                    className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-8 rounded-lg w-full h-11 focus:outline-none mt-4"
-                >
-                    Read More
-                </button>
+                <div className="flex justify-end">
+                    <button
+                        style={{
+                            borderRadius: "8px",
+                        }}
+                        className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-8 rounded-lg h-11 focus:outline-none mt-4"
+                    >
+                        Read More
+                    </button>
+                </div>
             </div>
         </div>
     );

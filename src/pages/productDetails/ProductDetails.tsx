@@ -1,14 +1,15 @@
 import Loading from "@/components/loading/Loading";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { useAddToCartProductMutation } from "@/redux/features/product/addedCartManagementApi";
-import { useGetSingleProductQuery } from "@/redux/features/product/productManagementApi";
+import { useGetAllProductsQuery, useGetSingleProductQuery } from "@/redux/features/product/productManagementApi";
 import { useAppSelector } from "@/redux/hook";
 import { TProduct, TUser } from "@/types";
 import { jwtDecode } from "jwt-decode";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const ProductDetails = () => {
+    const { data: products } = useGetAllProductsQuery(undefined);
     const { id } = useParams();
     const navigate = useNavigate();
     const [addToCartProduct] = useAddToCartProductMutation();
@@ -34,7 +35,8 @@ const ProductDetails = () => {
     if (isError || !stationeryProduct?.data) {
         return <p>Error fetching product details. Please try again later.</p>;
     }
-    const { _id,name, brand, category, image, price, inStock, description, quantity } = stationeryProduct?.data as TProduct
+    const { _id, name, brand, category, image, price, inStock, description, quantity } = stationeryProduct?.data as TProduct
+    const relatedProducts = products?.data?.filter((product: TProduct) => product?.category?.name === category?.name)
 
     const handleAddToCart = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -59,11 +61,13 @@ const ProductDetails = () => {
         <div className="px-4 my-8">
             <h2 className="font-bold sectionTitle">Product <span className="primaryColor">Details</span></h2>
             <p className="sectionSubtitle">Discover all the specifications, features, and details about this product to make an informed purchase. From quality materials to performance, find everything you need right here.</p>
-            <div className="flex flex-col gap-8 md:flex-row">
-                <div>
-                    <img className="w-full h-[400px] object-cover" style={{ borderRadius: '8px' }} src={image} alt={name} /></div>
 
-                <div className="flex flex-col space-y-4">
+            <div className="flex items-center justify-between gap-8">
+                <div className="flex-1">
+                    <img className="w-full h-[400px] object-cover" style={{ borderRadius: '8px' }} src={image} alt={name} />
+                </div>
+
+                <div className="flex flex-col flex-1 space-y-4 ">
                     <div className="flex flex-col items-start justify-between space-y-4 md:flex-row md:items-center md:space-y-0">
                         <h2 className="text-3xl font-bold text-gray-800">
                             {name}
@@ -83,7 +87,7 @@ const ProductDetails = () => {
                         </span>
                     </div>
                     <h2 className="text-lg font-semibold text-gray-600">
-                        Category: <span className="font-normal">{category}</span>
+                        Category: <span className="font-normal">{category?.name}</span>
                     </h2>
                     <h2 className="text-xl font-bold text-[#fb5770]">
                         Price: <span>${price}</span>
@@ -129,8 +133,23 @@ const ProductDetails = () => {
                 </div>
             </div>
 
-
-
+            <div className="mt-16">
+                <h2 className="mb-4 text-2xl font-bold text-gray-700">Related Products</h2>
+                <div className="grid grid-cols-6 gap-4">
+                    {
+                        relatedProducts?.slice(0, 12)?.map((product: TProduct) => (
+                            <div key={product?._id} className="bg-white border shadow rounded-xl">
+                                <img className="h-[200px] w-full object-cover rounded-t-xl" src={product?.image} alt="" />
+                                <div className="p-4">
+                                    <Link to={`/productDetails/${product?._id}`} >
+                                        <h2 className="text-lg font-medium text-center text-gray-700 hover:text-[#fb5770] hover:underline">{product?.name}</h2></Link>
+                                    <p className="text-[#fb5770] text-lg font-bold text-center">{product?.price}tk</p>
+                                </div>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
         </div>
     );
 };

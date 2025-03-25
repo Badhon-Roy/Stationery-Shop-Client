@@ -10,6 +10,7 @@ import { TUser } from "@/types";
 import { toast } from "sonner";
 import { useGetAddedCartQuery } from "@/redux/features/product/addedCartManagementApi";
 import Loading from "./loading/Loading";
+import { useGetAddedFavoriteQuery } from "@/redux/features/product/addedFavoriteManagementApi";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,11 +23,11 @@ const Navbar = () => {
   }
 
   const { data: addedCartProduct, isLoading: addedCartLoading } = useGetAddedCartQuery(((user as TUser)?.email));
-  // console.log(addedCartProduct?.data?.map(item => item.product?.map(id => console.log(id))))
+  const { data: addedFavorite, isLoading: addedFavoriteLoading } = useGetAddedFavoriteQuery(((user as TUser)?.email));
   const totalAddedCart = addedCartProduct?.data?.map((item: any) => item.products?.length)[0]
 
   // console.log(addedCartProduct?.data?.map((item : any)  => item.product.length)[0]);
-  if (addedCartLoading) {
+  if (addedCartLoading || addedFavoriteLoading) {
     return <Loading />
   }
 
@@ -48,12 +49,12 @@ const Navbar = () => {
       element: "Home"
     },
     {
-      path: '/about',
-      element: "About"
-    },
-    {
       path: '/allProducts',
       element: "Shop"
+    },
+    {
+      path: '/about',
+      element: "About"
     },
     {
       path: `/dashboard/${(user as TUser)?.role}`,
@@ -119,14 +120,15 @@ const Navbar = () => {
             {
               user && (user as TUser)?.email ? (
                 <div className="flex items-center gap-4">
-                  <Link to={"/favoriteCards"} className="relative">
+                  <Link to={"/addedFavorites"} className="relative">
                     <img
                       className="w-[30px]"
                       src="https://cdn-icons-png.flaticon.com/512/73/73814.png"
                       alt="Favorite"
                     />
                     <p className="absolute -top-3 -right-1 bg-[#fb5770] text-white text-sm font-bold p-1 rounded-full w-[20px] h-[20px] flex justify-center items-center">
-                      2
+                      {addedFavorite?.data?.length > 0 ? `${addedFavorite?.data?.length}`
+                        : '0'}
                     </p>
                   </Link>
                   <Link to={"/addedCards"} className="relative">

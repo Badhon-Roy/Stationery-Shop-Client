@@ -2,6 +2,7 @@ import App from "@/App";
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import About from "@/pages/about/About";
 import AddedCards from "@/pages/addedCards/AddedCards";
+import AddedFavorites from "@/pages/addedFavorites/AddedFavorites";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
 import AllOrders from "@/pages/admin/orderManagement/AllOrders";
 import CreateProduct from "@/pages/admin/productManagement/CreateProduct";
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: '/addedCards',
                 element: <AddedCards />
+            },
+            {
+                path: '/addedFavorites',
+                element: <AddedFavorites />
             },
             {
                 path: '/order',

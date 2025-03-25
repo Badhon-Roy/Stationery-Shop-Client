@@ -4,17 +4,22 @@ import { useDeleteAddToCartProductMutation, useGetAddedCartQuery, useUpdateCartQ
 import { useAppSelector } from "@/redux/hook";
 import { TUser } from "@/types";
 import { verifyToken } from "@/utils/verifyToken";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdDelete } from 'react-icons/md';
 import { FaPlus, FaMinus, FaRegHeart, FaArrowRight } from 'react-icons/fa';
 import { toast } from "sonner";
 import { useCreateOrderMutation } from "@/redux/features/order/orderManagementApi";
+import { useAddToFavoriteProductMutation } from "@/redux/features/product/addedFavoriteManagementApi";
 
 const AddedCards = () => {
     const [deleteAddedCart] = useDeleteAddToCartProductMutation();
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
     const [createOrder] = useCreateOrderMutation();
     const token = useAppSelector(selectCurrentToken);
+    const [addToFavoriteProduct] = useAddToFavoriteProductMutation();
+    const location = useLocation();
+    const navigate = useNavigate();
+
     let user: TUser | null = null;
     if (token) {
         user = verifyToken(token) as TUser;
@@ -26,7 +31,7 @@ const AddedCards = () => {
 
 
     const subtotal = addedCartProduct?.data?.[0]?.products?.reduce(
-        (acc : any, item : any) => acc + item?.productId?.price * item.quantity,
+        (acc: any, item: any) => acc + item?.productId?.price * item.quantity,
         0
     ) || 0;
     const shipping = subtotal > 0 ? 50 : 0; // Example shipping logic
@@ -111,7 +116,25 @@ const AddedCards = () => {
         }
 
     }
-    
+
+    const handleAddToFavorite = async (_id : string) => {
+        if (!user || !((user as TUser)?.email)) {
+            navigate("/login", { state: { from: location } });
+        } else {
+            const favoriteInfo = {
+                email: ((user as TUser)?.email),
+                product: _id
+            }
+            const res = await addToFavoriteProduct(favoriteInfo)
+            console.log(res);
+            if (res?.data?.success) {
+                toast.success(res?.data?.message)
+            } else if (res?.error) {
+                toast.error('Something went wrong!')
+            }
+        }
+    };
+
 
 
 
@@ -147,7 +170,7 @@ const AddedCards = () => {
                                                         <button onClick={() => handleDelete(item?.productId?._id)} className="text-red-500 hover:text-red-700">
                                                             <MdDelete className="text-3xl" />
                                                         </button>
-                                                        <button className="flex items-center text-pink-500 hover:text-pink-700">
+                                                        <button onClick={()=>handleAddToFavorite(item?.productId?._id)} className="flex items-center text-pink-500 hover:text-pink-700">
                                                             <FaRegHeart className="text-2xl" />
                                                             <span className="ml-2">Add to Wishlist</span>
                                                         </button>
@@ -217,7 +240,7 @@ const AddedCards = () => {
                                     <h3 className="mb-5 text-xl font-bold text-center">Cart Summary</h3>
                                     <div className="flex items-center justify-between mb-3">
                                         <p className="text-lg font-semibold">Total Items:</p>
-                                        {addedCartProduct?.data?.[0]?.products?.reduce((acc : any, item : any) => acc + item.quantity, 0) || 0}
+                                        {addedCartProduct?.data?.[0]?.products?.reduce((acc: any, item: any) => acc + item.quantity, 0) || 0}
                                     </div>
                                     <div className="flex items-center justify-between mb-3">
                                         <p className="text-lg font-semibold">Subtotal:</p>
