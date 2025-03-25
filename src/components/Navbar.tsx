@@ -52,7 +52,7 @@ const Navbar = () => {
       element: "About"
     },
     {
-      path: '/shop',
+      path: '/allProducts',
       element: "Shop"
     },
     {

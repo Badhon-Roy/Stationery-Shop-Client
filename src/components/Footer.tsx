@@ -114,7 +114,7 @@ const Footer = () => {
                                 </p>
                                 <p className="flex items-center gap-2">
                                     <span className="text-[#fb5770]"><MdOutlineEmail /></span>
-                                    info.sociohub@domain.com
+                                    info.shop@domain.com
                                 </p>
                                 <p className="flex items-center gap-2">
                                     <span className="text-[#fb5770]"><MdLocationOn /></span>

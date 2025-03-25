@@ -1,60 +1,57 @@
 import { baseApi } from "@/redux/api/baseApi";
+import { TResponseRedux } from "@/types";
 
 
 
 const orderManagementApi = baseApi.injectEndpoints({
-    endpoints: (builder) => ({
-        // getAddedCart: builder.query({
-        //     query: (email: string | undefined) => {
-        //       const params = new URLSearchParams();
-        //       if (email) {
-        //         params.append('email', email);
-        //       }
-      
-        //       return {
-        //         url: '/addedCarts/get-addedCart',
-        //         method: 'GET',
-        //         params: params,
-        //       };
-        //     },
-        //     providesTags: ['order'],
-        //     transformResponse: (response: TResponseRedux<any>) => {
-        //       return {
-        //         data: response?.data,
-        //         meta: response?.meta
-        //       };
-        //     }
-        //   }),
-        
-        createOrder: builder.mutation({
-            query: (data) => ({
-                url: '/orders/create-order',
-                method: "POST",
-                body: data
-            }),
-            invalidatesTags: ['order']
-        }),
+  endpoints: (builder) => ({
+    getOrders: builder.query({
+      query: (email: string | undefined) => {
+        const params = new URLSearchParams();
+        if (email) {
+          params.append('email', email);
+        }
 
-    //     updateCartQuantity: builder.mutation({
-    //       query: ({ email, productId, change }) => ({
-    //           url: `/addedCarts/update-quantity`,
-    //           method: "PATCH",
-    //           body: { email, productId, change },
-    //       }),
-    //       invalidatesTags: ['order']
-    //   }),
-    //     deleteAddToCartProduct: builder.mutation({
-    //         query: ({ email, productId }) => ({
-    //             url: `/addedCarts/delete-addedCart?email=${email}`,
-    //             method: "DELETE",
-    //             body: {
-    //                 productId,
-    //             }
-    //         }),
-    //         invalidatesTags: ['order'],
-    //     }),
-        
-    })
+        return {
+          url: '/orders/get-order',
+          method: 'GET',
+          params: params,
+        };
+      },
+      providesTags: ['order'],
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response?.data,
+          meta: response?.meta
+        };
+      }
+    }),
+
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: '/orders/create-order',
+        method: "POST",
+        body: data
+      }),
+      invalidatesTags: ['order']
+    }),
+    updateOrderStatus: builder.mutation({
+      query: ({ email, orderId, status }) => ({
+        url: '/orders/update-OrderStatus',
+        method: "PUT",
+        body: { email, orderId, status }
+      }),
+      invalidatesTags: ['order']
+    }),
+    deleteOrder: builder.mutation({
+      query: (args) => ({
+        url: `/orders/delete-order/${args.id}`,
+        method: "DELETE"
+      }),
+      invalidatesTags: ['order']
+    }),
+
+  })
 })
 
-export const { useCreateOrderMutation} = orderManagementApi;
+export const { useCreateOrderMutation, useGetOrdersQuery, useUpdateOrderStatusMutation, useDeleteOrderMutation } = orderManagementApi;

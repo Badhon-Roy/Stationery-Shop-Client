@@ -1,13 +1,29 @@
 import Loading from "@/components/loading/Loading";
+import { selectCurrentToken } from "@/redux/features/auth/authSlice";
+import { useAddToCartProductMutation } from "@/redux/features/product/addedCartManagementApi";
 import { useGetSingleProductQuery } from "@/redux/features/product/productManagementApi";
-import { TProduct } from "@/types";
-import { useParams } from "react-router-dom";
+import { useAppSelector } from "@/redux/hook";
+import { TProduct, TUser } from "@/types";
+import { jwtDecode } from "jwt-decode";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const ProductDetails = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const [addToCartProduct] = useAddToCartProductMutation();
+    const location = useLocation();
     const { data: stationeryProduct, isLoading, isError } = useGetSingleProductQuery({
         productId: id
     })
+
+    const token = useAppSelector(selectCurrentToken);
+    let user: TUser | undefined;
+
+    if (token) {
+        user = jwtDecode(token);
+    }
+
 
     if (isLoading) {
         return <Loading />
@@ -18,7 +34,27 @@ const ProductDetails = () => {
     if (isError || !stationeryProduct?.data) {
         return <p>Error fetching product details. Please try again later.</p>;
     }
-    const { name, brand, category, image, price, inStock, description, quantity } = stationeryProduct?.data as TProduct
+    const { _id,name, brand, category, image, price, inStock, description, quantity } = stationeryProduct?.data as TProduct
+
+    const handleAddToCart = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!user || !((user as TUser)?.email)) {
+            navigate("/login", { state: { from: location } });
+        } else {
+            const cartInfo = {
+                email: ((user as TUser)?.email),
+                product: _id
+            }
+            const res = await addToCartProduct(cartInfo)
+            if (res?.data?.success) {
+                toast.success(res?.data?.message)
+            } else if (res?.error) {
+                toast.error('Something went wrong!')
+            }
+        }
+    };
+
+
     return (
         <div className="px-4 my-8">
             <h2 className="font-bold sectionTitle">Product <span className="primaryColor">Details</span></h2>
@@ -64,6 +100,7 @@ const ProductDetails = () => {
                     <div>
                         <div className="flex gap-4">
                             <button
+                                onClick={handleAddToCart}
                                 style={{
                                     borderRadius: "8px",
                                 }}

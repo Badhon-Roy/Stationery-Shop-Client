@@ -70,19 +70,19 @@ const AllProducts = () => {
                         placeholder="Search by name..."
                         {...register("nameTerm")}
                         style={{borderRadius: '4px'}}
-                        className="flex-grow px-4 py-2 w-[200px] border-2 border-[#fb5770] outline-none"
+                        className="flex-grow px-4 py-2 md:w-[200px] w-full md:mt-0 mb-4  border-2 border-[#fb5770] outline-none"
                     />
                     <input
                         type="text"
                         placeholder="Search by brand..."
                         {...register("brandTerm")}
                         style={{borderRadius: '4px'}}
-                        className="flex-grow px-4 py-2 w-[200px] border-2 border-[#fb5770] outline-none"
+                        className="flex-grow px-4 py-2 md:w-[200px] w-full md:mt-0 mb-4  border-2 border-[#fb5770] outline-none"
                     />
                     <select
                         {...register("categoryTerm")}
                         style={{borderRadius: '4px'}}
-                        className="flex-grow px-4 py-2 w-[200px] border-2 border-[#fb5770] outline-none"
+                        className="flex-grow px-4 py-2 md:w-[200px] w-[55%] border-2 border-[#fb5770] outline-none"
                         defaultValue=""
                     >
                         <option value="" disabled>Select a category</option>
@@ -94,7 +94,7 @@ const AllProducts = () => {
                     <button
                         type="submit"
                         style={{borderRadius: '4px'}}
-                        className="ml-2 px-4 py-2 bg-[#fb5770] text-white hover:bg-[#e04d62]"
+                        className="ml-2 md:w-auto w-[40%] md:ms-0 mr-auto px-4 py-2 bg-[#fb5770] text-white hover:bg-[#e04d62]"
                     >
                         Search
                     </button>

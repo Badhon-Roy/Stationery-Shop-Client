@@ -1,12 +1,9 @@
-import { useDeleteUserMutation, useGetAllUserQuery, useUpdateUserRoleMutation } from "@/redux/features/user/userManagementApi";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import Loading from "@/components/loading/Loading";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { TOrder } from "@/pages/verify/OrderVerify";
+import { useDeleteOrderMutation, useGetOrdersQuery, useUpdateOrderStatusMutation } from "@/redux/features/order/orderManagementApi";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
     Dialog,
     DialogContent,
@@ -20,126 +17,116 @@ import {
 import { TbAlertTriangleFilled } from "react-icons/tb";
 import { DialogClose } from "@radix-ui/react-dialog";
 
-import Loading from "@/components/loading/Loading";
-import { useState } from "react";
-import { toast } from "sonner";
-import { FaUser, FaUserShield } from "react-icons/fa";
-const UserData = () => {
-    const { data: users, isLoading } = useGetAllUserQuery(undefined)
-    const [updateUserRole] = useUpdateUserRoleMutation();
-    const [deleteUser] = useDeleteUserMutation();
-    const [deleteItemId, setDeleteItemId] = useState(null);
-    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-    const [itemToUpdate, setItemToUpdate] = useState(null);
 
-    // Handle opening the modal
-    const openDeleteModal = (itemId: any) => {
-        setDeleteItemId(itemId);
-    };
-    const openUpdateModal = (itemId: any) => {
-        setItemToUpdate(itemId); // Pass the item id to delete
-        setIsUpdateModalOpen(true);
-    };
-    const closeUpdateModal = () => {
-        setIsUpdateModalOpen(false);
-        setItemToUpdate(null);
+
+const AllOrders = () => {
+    const { data: getOrders, isLoading: addedCartLoading } = useGetOrdersQuery(undefined);
+    const [updateOrderStatus] = useUpdateOrderStatusMutation();
+    const [deleteOrder] = useDeleteOrderMutation();
+    const [orderStatusData, setOrderStatusData] = useState<TOrder | null>(null);
+    const [orderDeleteId, setOrderDeleteId] = useState(null);
+
+
+    const openUpdateModal = (orderData: any) => {
+        setOrderStatusData(orderData);
     };
 
-    // Handle the delete action
-    const handleUpdate = async (role: string) => {
-        const toastId = toast.loading('Updating..');
-        if (itemToUpdate) {
-            const userInfo = {
-                userId: itemToUpdate,
-                role: String(role)
+    const openDeleteModal = (deleteId: any) => {
+        setOrderDeleteId(deleteId);
+    };
+
+    const handleUpdate = async (status: string) => {
+        const toastId = toast.loading('Updating...')
+        try {
+            const updateOrderInfo = {
+                email: orderStatusData?.email,
+                orderId: orderStatusData?._id,
+                status: status
             }
-            const res = await updateUserRole({
-                id: itemToUpdate,
-                data: userInfo
-            })
-            console.log(res);
+            const res = await updateOrderStatus(updateOrderInfo)
             if (res?.data?.success) {
                 toast.success(res?.data?.message, { id: toastId });
             } else if (res?.error) {
                 toast.error('Something went wrong. Please try again!', { id: toastId });
             }
-            closeUpdateModal();
+        } catch (error) {
+            console.log(error);
+            toast.error('Something went wrong. Please try again!', { id: toastId });
         }
-    };
-    // Handle the delete action
-    const handleDelete = async () => {
-        const toastId = toast.loading('Deleting..');
-        if (deleteItemId) {
-            const res = await deleteUser({
-                id: deleteItemId
-            })
-            if (res?.data?.success) {
-                toast.success(res?.data?.message, { id: toastId });
-            } else if (res?.error) {
-                toast.error('Something went wrong. Please try again!', { id: toastId });
-            }
-        }
-    };
-    if (isLoading) {
-        return <Loading />
     }
 
+    const handleDelete = async () => {
+        const toastId = toast.loading('Deleting..');
+        if (orderDeleteId) {
+            const res = await deleteOrder({
+                id: orderDeleteId
+            })
+            if (res?.data?.success) {
+                toast.success(res?.data?.message, { id: toastId });
+            } else if (res?.error) {
+                toast.error('Something went wrong. Please try again!', { id: toastId });
+            }
+        }
+    };
+
+
+
+    if (addedCartLoading) {
+        return <Loading />
+    }
     return (
         <div>
-            <div>
-                <h2 className="dashboardTitle">View and <span className="primaryColor">Manage</span> Users</h2>
-                <p className="dashboardSubtitle">Easily access and control all user details from a single dashboard.</p>
-            </div>
+            <h2 className="dashboardTitle">View All<span className="primaryColor"> Order </span> Products</h2>
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead>Image</TableHead>
-                        <TableHead>Name</TableHead>
                         <TableHead>Email</TableHead>
-                        <TableHead className="text-center">Role</TableHead>
-                        <TableHead>Update Role</TableHead>
+                        <TableHead>Products</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Total Price</TableHead>
+                        <TableHead>Transaction Status</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead>Action</TableHead>
                     </TableRow>
                 </TableHeader>
 
-                {users?.data?.map(user => (
-                    <TableBody key={user?._id}>
-                        <TableRow>
-                            <TableCell >
-                                <img className="w-[40px] h-[40px] rounded-full object-cover" src={user?.photoUrl} alt="" />
-                            </TableCell>
-                            <TableCell>{user?.name}</TableCell>
-                            <TableCell>{user?.email}</TableCell>
+                {getOrders?.data?.map((order: TOrder) => (
+                    <TableBody key={order?._id}>
+                        <TableRow style={{ borderBottom: '1px solid #D1D5DB' }}>
+                            <TableCell>{order?.email}</TableCell>
                             <TableCell>
-                                <div className={`flex items-center justify-center space-x-2 ${user?.role === 'admin' ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gradient-to-r from-blue-400 to-blue-600 text-white'} rounded-full p-2 mx-4`}>
-                                    {user?.role === 'admin' ? (
-                                        <FaUserShield className="text-xl" />
-                                    ) : (
-                                        <FaUser className="text-xl" />
-                                    )}
-                                    <span>{user?.role}</span>
-                                </div>
+                                {order?.products?.map((product, index) =>
+                                    product?.product?.name ? (
+                                        <p className="text-sm" key={index}>
+                                            {product?.product?.name?.slice(0, 10)}
+                                            {product?.product?.name?.length > 10 ? "..." : ""} ,
+                                        </p>
+                                    ) : null
+                                )}
                             </TableCell>
 
+                            <TableCell>{new Date(order?.createdAt)?.toLocaleDateString()}</TableCell>
+                            <TableCell>{order?.totalPrice}tk</TableCell>
+                            <TableCell>{order?.transaction?.transactionStatus}</TableCell>
                             <TableCell>
-                                <Dialog>
-                                    <DialogTrigger>
-                                        <button
-                                            style={{
-                                                borderRadius: "8px",
-                                            }}
-                                            onClick={() => openUpdateModal(user?._id)}
-                                            className="text-sm font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 rounded-lg py-2 focus:outline-none"
-                                        >
-                                            Update
-                                        </button>
-                                    </DialogTrigger>
-                                    {isUpdateModalOpen &&
-                                        <DialogContent style={{ borderRadius: '8px' }} className="max-w-sm p-6 bg-white shadow-xl">
+                                {
+                                    order?.status === 'Pending' ? <Dialog>
+                                        <DialogTrigger>
+                                            <button
+                                                style={{
+                                                    borderRadius: "8px",
+                                                }}
+                                                onClick={() => openUpdateModal(order)}
+                                                className="text-sm w-full font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 rounded-lg py-2 focus:outline-none"
+                                            >
+                                                {order?.status}
+                                            </button>
+                                        </DialogTrigger>
+                                        <DialogContent style={{borderRadius: '8px'}} className="max-w-sm p-6 bg-white shadow-xl">
                                             <DialogHeader className="text-center">
                                                 <DialogTitle className="text-xl font-semibold text-center">Are you sure?</DialogTitle>
                                                 <DialogDescription className="text-center text-gray-600">
-                                                    update this user role?
+                                                     update this order status?
                                                 </DialogDescription>
                                             </DialogHeader>
 
@@ -155,30 +142,41 @@ const UserData = () => {
                                                     </button>
                                                 </DialogClose>
                                                 <button
-                                                    onClick={() => handleUpdate('admin')}
+                                                    onClick={()=>handleUpdate('Shipping')}
                                                     style={{
                                                         borderRadius: "8px",
                                                     }}
                                                     className="text-sm font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 rounded-lg py-2 focus:outline-none"
                                                 >
-                                                    As a Admin
-                                                </button>
-                                                <button
-                                                    onClick={() => handleUpdate('user')}
-                                                    style={{
-                                                        borderRadius: "8px",
-                                                    }}
-                                                    className="text-sm font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 rounded-lg py-2 focus:outline-none"
-                                                >
-                                                    As a User
+                                                    Shipping
                                                 </button>
                                             </DialogFooter>
                                         </DialogContent>
-                                    }
-                                </Dialog>
+                                    </Dialog>
+                                        : <span
+                                            className={`text-sm font-semibold flex items-center justify-center gap-2 p-1 rounded-full 
+                                                ${order?.status === "Shipping"
+                                                    ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
+                                                    : "bg-gray-500 text-white"
+                                                }`}
+                                            style={{
+                                                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                                                transition: "all 0.3s ease-in-out",
+                                            }}
+                                        >
+                                            <img className="w-[30px] md:block hidden" src="https://cdn-icons-png.flaticon.com/512/5952/5952766.png" alt="" />
+                                            <span>
+                                                {order?.status === "Pending"
+                                                    ? "Pending"
+                                                    : order?.status === "Shipping"
+                                                        ? "Shipping"
+                                                        : "Unknown"}
+                                            </span>
+                                        </span>
+
+                                }
+
                             </TableCell>
-
-
                             <TableCell>
                                 <Dialog>
                                     <DialogTrigger>
@@ -186,20 +184,20 @@ const UserData = () => {
                                             style={{
                                                 borderRadius: "8px",
                                             }}
-                                            onClick={() => openDeleteModal(user?._id)}
+                                            onClick={() => openDeleteModal(order?._id)}
                                             className="text-sm font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 rounded-lg py-2 focus:outline-none"
                                         >
                                             Delete
                                         </button>
                                     </DialogTrigger>
-                                    <DialogContent style={{ borderRadius: '8px' }} className="max-w-sm p-6 bg-white shadow-xl">
+                                    <DialogContent style={{borderRadius: '8px'}} className="max-w-sm p-6 bg-white shadow-xl">
                                         <DialogHeader className="text-center">
                                             <TbAlertTriangleFilled className="w-12 h-12 mx-auto text-red-500" />
                                             <DialogTitle className="text-xl font-semibold text-center text-gray-800">
                                                 Are you absolutely sure?
                                             </DialogTitle>
                                             <DialogDescription className="text-gray-600">
-                                                This action cannot be undone. This will permanently delete this user and remove user data from our users.
+                                                This action cannot be undone. This will permanently delete order and remove order data from our orders.
                                             </DialogDescription>
                                         </DialogHeader>
 
@@ -239,4 +237,4 @@ const UserData = () => {
     );
 };
 
-export default UserData;
+export default AllOrders;

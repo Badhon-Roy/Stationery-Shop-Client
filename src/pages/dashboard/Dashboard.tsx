@@ -38,6 +38,10 @@ const Dashboard = () => {
             element: "All Products",
         },
         {
+            path: `/dashboard/${role}/allOrders`,
+            element: "All Orders",
+        },
+        {
             path: `/dashboard/${role}/allUser`,
             element: "All User",
         },
@@ -57,7 +61,7 @@ const Dashboard = () => {
             element: "View Orders",
         },
         {
-            path: `/dashboard/${role}/profile`,
+            path: `/dashboard/${role}/userProfile`,
             element: "Profile",
         },
         {

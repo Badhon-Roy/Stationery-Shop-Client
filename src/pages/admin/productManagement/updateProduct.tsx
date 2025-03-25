@@ -39,7 +39,6 @@ const UpdateProduct = () => {
     }
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        console.log(data);
 
         try {
             const productInfo = {

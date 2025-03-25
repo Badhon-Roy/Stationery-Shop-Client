@@ -22,12 +22,7 @@ const Login = () => {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<LoginFormInputs>({
-        defaultValues: {
-            email: "badhon.roy@gmail.com",
-            password: "123456"
-        }
-    });
+    } = useForm<LoginFormInputs>();
 
     const from = location.state?.from?.pathname || "/";
 

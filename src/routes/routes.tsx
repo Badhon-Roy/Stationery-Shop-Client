@@ -3,6 +3,7 @@ import ProtectedRoute from "@/components/layout/ProtectedRoute";
 import About from "@/pages/about/About";
 import AddedCards from "@/pages/addedCards/AddedCards";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
+import AllOrders from "@/pages/admin/orderManagement/AllOrders";
 import CreateProduct from "@/pages/admin/productManagement/CreateProduct";
 import GetAllProducts from "@/pages/admin/productManagement/GetAllProducts";
 import UpdateProduct from "@/pages/admin/productManagement/updateProduct";
@@ -14,6 +15,8 @@ import Login from "@/pages/login/Login";
 import Order from "@/pages/order/Order";
 import ProductDetails from "@/pages/productDetails/ProductDetails";
 import SignUp from "@/pages/signUp/SignUp";
+import ViewOrders from "@/pages/user/orderManagement/ViewOrders";
+import UserProfile from "@/pages/user/UserProfile";
 import OrderVerify from "@/pages/verify/OrderVerify";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -89,6 +92,18 @@ const router = createBrowserRouter([
             {
                 path: 'allUser',
                 element: <ProtectedRoute role="admin"><UserData /></ProtectedRoute>
+            },
+            {
+                path: 'allOrders',
+                element: <ProtectedRoute role="admin"><AllOrders /></ProtectedRoute>
+            },
+            {
+                path: 'viewOrders',
+                element: <ProtectedRoute role="user"><ViewOrders /></ProtectedRoute>
+            },
+            {
+                path: 'userProfile',
+                element: <ProtectedRoute role="user"><UserProfile /></ProtectedRoute>
             }
         ]
     }

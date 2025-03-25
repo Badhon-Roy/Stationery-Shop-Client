@@ -1,31 +1,29 @@
 import { baseApi } from "@/redux/api/baseApi";
-import { TLoginUser, TQueryParam, TResponseRedux } from "@/types";
+import { TLoginUser, TResponseRedux } from "@/types";
 
 
 
 const userManagementApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllUser: builder.query({
-            query: (args) => {
+            query: (email: string | undefined) => {
                 const params = new URLSearchParams();
-                if (args) {
-                    args.forEach((item: TQueryParam) => {
-                        params.append(item.name, item.value as string)
-                    })
+                if (email) {
+                    params.append('email', email);
                 }
 
                 return {
                     url: '/users/get-user',
-                    method: "GET",
-                    params: params
-                }
+                    method: 'GET',
+                    params: params,
+                };
             },
             providesTags: ['user'],
             transformResponse: (response: TResponseRedux<TLoginUser[]>) => {
                 return {
                     data: response?.data,
                     meta: response?.meta
-                }
+                };
             }
         }),
         createUser: builder.mutation({
@@ -44,6 +42,16 @@ const userManagementApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: ['user']
         }),
+        
+        updateUser: builder.mutation({
+            query: (args) => ({
+                url: `/users/update-user/${args.id}`,
+                method: "PUT",
+                body: args.data
+            }),
+            invalidatesTags: ['user']
+        }),
+
         deleteUser: builder.mutation({
             query: (args) => ({
                 url: `/users/delete-user/${args.id}`,
@@ -54,4 +62,4 @@ const userManagementApi = baseApi.injectEndpoints({
     })
 })
 
-export const { useGetAllUserQuery, useCreateUserMutation , useDeleteUserMutation , useUpdateUserRoleMutation} = userManagementApi;
+export const { useGetAllUserQuery, useCreateUserMutation, useDeleteUserMutation, useUpdateUserMutation, useUpdateUserRoleMutation } = userManagementApi;
