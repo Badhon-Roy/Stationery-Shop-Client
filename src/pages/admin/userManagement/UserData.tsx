@@ -24,8 +24,26 @@ import Loading from "@/components/loading/Loading";
 import { useState } from "react";
 import { toast } from "sonner";
 import { FaUser, FaUserShield } from "react-icons/fa";
+import ProductPagination from "@/components/Pagination";
+import { useLocation } from "react-router-dom";
+
+const useQueryParams = () => {
+    const location = useLocation();
+    return new URLSearchParams(location.search);
+};
+
+
+
 const UserData = () => {
-    const { data: users, isLoading } = useGetAllUserQuery(undefined)
+    const queryParams = useQueryParams();
+    const currentPage = queryParams.get('page') || '1';
+    const limit = '12';
+    const { data: users, isLoading } = useGetAllUserQuery(
+        {
+            page: currentPage,
+            limit: limit,
+        }
+    )
     const [updateUserRole] = useUpdateUserRoleMutation();
     const [deleteUser] = useDeleteUserMutation();
     const [deleteItemId, setDeleteItemId] = useState(null);
@@ -110,7 +128,7 @@ const UserData = () => {
                             </TableCell>
                             <TableCell>{user?.name}</TableCell>
                             <TableCell>{user?.email}</TableCell>
-                            <TableCell>
+                            <TableCell className="w-[180px]">
                                 <div className={`flex items-center justify-center space-x-2 ${user?.role === 'admin' ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gradient-to-r from-blue-400 to-blue-600 text-white'} rounded-full p-2 mx-4`}>
                                     {user?.role === 'admin' ? (
                                         <FaUserShield className="text-xl" />
@@ -235,6 +253,8 @@ const UserData = () => {
                     </TableBody>
                 ))}
             </Table>
+
+            <ProductPagination totalPage={users?.meta?.totalPage || 1} />
         </div>
     );
 };

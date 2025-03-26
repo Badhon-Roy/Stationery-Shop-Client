@@ -9,11 +9,11 @@ const FilterCategoryProducts = () => {
     const educational = products?.data?.filter((product: TProduct) => product?.category?.name === 'Educational')
     const technologies = products?.data?.filter((product: TProduct) => product?.category?.name === 'Technology')
     return (
-        <div className="flex items-center justify-between gap-8 my-16">
-            <div className="w-1/3">
-                <div className="w-full h-[600px] flex flex-col items-center" style={{ backgroundImage: "url('https://cdn.shopify.com/s/files/1/0905/2012/files/station-h11.jpg?v=1631591355')", backgroundSize: "cover", backgroundPosition: "center", borderRadius : '8px' }} >
+        <div className="items-center justify-between gap-8 mx-4 my-16 xl:flex lg:mx-0">
+            <div className="xl:w-1/3">
+                <div className="w-full xl:h-[620px] lg:h-[300px] md:h-[250px] h-full flex flex-col items-center p-4" style={{ backgroundImage: "url('https://cdn.shopify.com/s/files/1/0905/2012/files/station-h11.jpg?v=1631591355')", backgroundSize: "cover", backgroundPosition: "center", borderRadius : '8px' }} >
 
-                    <h2 className="mt-16 text-4xl font-bold text-white">Custom Notebooks</h2>
+                    <h2 className="mt-8 text-2xl font-bold text-white lg:mt-16 lg:text-4xl">Custom Notebooks</h2>
                     <button
                         style={{
                             borderRadius: "8px",
@@ -25,7 +25,7 @@ const FilterCategoryProducts = () => {
                 </div>
 
             </div>
-            <div className="grid w-2/3 grid-cols-2 gap-8">
+            <div className="grid gap-8 mt-8 xl:w-2/3 md:grid-cols-2 xl:mt-0">
                 <div className="px-8 py-4 bg-[#f6f6f6] flex items-center gap-4 rounded shadow">
                     <div className="flex-1">
                         <h2 className="mb-4 text-xl font-medium text-gray-700">Office Basics</h2>

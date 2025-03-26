@@ -17,6 +17,7 @@ import Order from "@/pages/order/Order";
 import ProductDetails from "@/pages/productDetails/ProductDetails";
 import SignUp from "@/pages/signUp/SignUp";
 import ViewOrders from "@/pages/user/orderManagement/ViewOrders";
+import UserDashboard from "@/pages/user/UserDashboard";
 import UserProfile from "@/pages/user/UserProfile";
 import OrderVerify from "@/pages/verify/OrderVerify";
 import { createBrowserRouter } from "react-router-dom";
@@ -101,6 +102,11 @@ const router = createBrowserRouter([
             {
                 path: 'allOrders',
                 element: <ProtectedRoute role="admin"><AllOrders /></ProtectedRoute>
+            },
+            {
+                path: 'userDashboard',
+                index: true,
+                element: <ProtectedRoute role="user"><UserDashboard /></ProtectedRoute>
             },
             {
                 path: 'viewOrders',

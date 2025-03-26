@@ -11,6 +11,7 @@ const CreateProduct = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset
     } = useForm<TProduct>();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
@@ -26,9 +27,9 @@ const CreateProduct = () => {
 
             }
             const res = (await addProduct(productInfo)) as TResponse<any>
-            console.log(res);
             if (res?.data?.success) {
                 toast.success(res?.data?.message, { id: toastId });
+                reset();
             } else if (res?.error) {
                 toast.error('Something went wrong. Please try again!', { id: toastId });
             }

@@ -8,9 +8,9 @@ const WritingProducts = () => {
     const { data: products, isLoading } = useGetAllProductsQuery(undefined)
     const writingProducts = products?.data?.filter((product: TProduct) => product?.category?.name === 'Writing')
     return (
-        <div className="my-32 ">
+        <div className="mx-4 md:my-32">
             <div className="flex items-center justify-between gap-8 mb-8">
-                <h2 className="text-2xl font-bold text-gray-700">Cute Writing Products</h2>
+                <h2 className="text-lg font-bold text-gray-700 md:text-2xl">Cute Writing Products</h2>
                 <Link to='/allProducts'>
                     <button
                         style={{ borderRadius: "8px" }}
@@ -20,8 +20,23 @@ const WritingProducts = () => {
                     </button>
                 </Link>
             </div>
-            <div className="flex justify-between gap-8">
-                <div className="grid w-2/3 grid-cols-4 gap-4">
+            <div className="flex-row-reverse justify-between gap-8 xl:flex">
+                <div className="xl:w-1/3">
+                    <div className="flex flex-col items-center p-4 w-full xl:h-[600px] lg:h-[300px] md:h-[250px] h-full" style={{ backgroundImage: "url('https://img.freepik.com/premium-photo/digital-pen-writing-code-with-blue-light-effects-background-representing-ai-powered-content-writing-automated-content-generation-digital-content-creation_982248-11880.jpg?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid')", backgroundSize: "cover", backgroundPosition: "center", borderRadius: '8px' }} >
+
+                        <h2 className="mt-8 text-2xl font-bold text-white md:mt-16 lg:text-4xl">Writing Accessories</h2>
+                        <button
+                            style={{
+                                borderRadius: "8px",
+                            }}
+                            className="text-sm mt-8 font-medium border border-white bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-8 rounded-lg h-11 focus:outline-none"
+                        >
+                            Shop now
+                        </button>
+                    </div>
+
+                </div>
+                <div className="grid grid-cols-2 gap-4 mt-8 xl:w-2/3 md:grid-cols-3 lg:grid-cols-4 xl:mt-0">
                     {
                         isLoading
                             ?
@@ -37,31 +52,23 @@ const WritingProducts = () => {
                             :
                             writingProducts?.slice(0, 8)?.map((product: TProduct) => (
                                 <div key={product?._id} className="bg-white border shadow rounded-xl">
-                                    <img className="h-[200px] w-full object-cover rounded-t-xl" src={product?.image} alt="" />
-                                    <div className="p-4">
+                                    <img className="lg:h-[200px] h-[150px] w-full object-cover rounded-t-xl" src={product?.image} alt="" />
+                                    <div className="p-2 lg:p-4">
                                         <Link to={`/productDetails/${product?._id}`} >
-                                            <h2 className="text-lg font-medium text-center text-gray-700 hover:text-[#fb5770] hover:underline">{product?.name}</h2></Link>
+
+                                            <h2 className="text-lg font-medium text-center text-gray-700 hover:text-[#fb5770] hover:underline">
+
+                                                {product?.name.length > 20 ? product?.name.slice(0, 20
+                                                ) + "..." : product?.name}
+
+                                            </h2></Link>
                                         <p className="text-[#fb5770] text-lg font-bold text-center">{product?.price}tk</p>
                                     </div>
                                 </div>
                             ))
                     }
                 </div>
-                <div className="w-1/3">
-                    <div className="flex flex-col items-center w-full h-full" style={{ backgroundImage: "url('https://img.freepik.com/premium-photo/digital-pen-writing-code-with-blue-light-effects-background-representing-ai-powered-content-writing-automated-content-generation-digital-content-creation_982248-11880.jpg?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid')", backgroundSize: "cover", backgroundPosition: "center", borderRadius: '8px' }} >
 
-                        <h2 className="mt-16 text-4xl font-bold text-white">Writing Accessories</h2>
-                        <button
-                            style={{
-                                borderRadius: "8px",
-                            }}
-                            className="text-sm mt-8 font-medium border border-white bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-8 rounded-lg h-11 focus:outline-none"
-                        >
-                            Shop now
-                        </button>
-                    </div>
-
-                </div>
             </div>
         </div>
     );

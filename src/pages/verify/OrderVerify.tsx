@@ -52,13 +52,13 @@ const OrderVerify = () => {
             <h2 className="font-bold sectionTitle"><span className="primaryColor">Payment</span> Successful</h2>
 
             <div style={{ borderRadius: '8px' }} className="md:flex justify-between gap-10 space-y-2 text-left md:max-w-[600px] md:mx-auto shadow-xl p-6 bg-[#fb5770] text-sm w-full">
-                <div>
+                <div className="space-y-2">
                     <p className="text-white"><strong>Email:</strong> {email}</p>
                     <p className="text-white"><strong>Total Products:</strong> {products?.length}</p>
                     <p className="text-white"><strong>Total Price:</strong> {totalPrice}tk</p>
                     <p className="text-white"><strong>Date:</strong> {new Date(createdAt)?.toLocaleDateString()}</p>
                 </div>
-                <div>
+                <div className="space-y-2">
                     <p className="text-white"><strong>Status:</strong> {status}</p>
                     <p className="text-white"><strong>Transaction ID:</strong> {transaction?.id}</p>
                     <p className="text-white"><strong>Transaction Status:</strong> {transaction?.transactionStatus}</p>

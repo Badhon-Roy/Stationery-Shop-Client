@@ -6,26 +6,34 @@ import { TLoginUser, TResponseRedux } from "@/types";
 const userManagementApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllUser: builder.query({
-            query: (email: string | undefined) => {
-                const params = new URLSearchParams();
-                if (email) {
-                    params.append('email', email);
-                }
-
-                return {
-                    url: '/users/get-user',
-                    method: 'GET',
-                    params: params,
-                };
+            query: ({ email, page, limit }) => {
+              const params = new URLSearchParams();
+              
+              if (email) {
+                params.append('email', email);
+              }
+              if (page) {
+                params.append('page', page);
+              }
+              if (limit) {
+                params.append('limit', limit);
+              }
+          
+              return {
+                url: '/users/get-user',
+                method: 'GET',
+                params: params,
+              };
             },
             providesTags: ['user'],
             transformResponse: (response: TResponseRedux<TLoginUser[]>) => {
-                return {
-                    data: response?.data,
-                    meta: response?.meta
-                };
-            }
-        }),
+              return {
+                data: response?.data,
+                meta: response?.meta,
+              };
+            },
+          }),
+          
         createUser: builder.mutation({
             query: (data) => ({
                 url: '/users/create-user',

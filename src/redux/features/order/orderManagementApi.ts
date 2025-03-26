@@ -6,12 +6,19 @@ import { TResponseRedux } from "@/types";
 const orderManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrders: builder.query({
-      query: (email: string | undefined) => {
+      query: ({ email, page, limit }) => {
         const params = new URLSearchParams();
+        
         if (email) {
           params.append('email', email);
         }
-
+        if (page) {
+          params.append('page', page);
+        }
+        if (limit) {
+          params.append('limit', limit);
+        }
+    
         return {
           url: '/orders/get-order',
           method: 'GET',
@@ -26,6 +33,7 @@ const orderManagementApi = baseApi.injectEndpoints({
         };
       }
     }),
+    
 
     createOrder: builder.mutation({
       query: (data) => ({

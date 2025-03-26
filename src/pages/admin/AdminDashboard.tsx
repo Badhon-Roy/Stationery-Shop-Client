@@ -5,7 +5,8 @@ import { useGetAllUserQuery } from "@/redux/features/user/userManagementApi";
 const AdminDashboard = () => {
     // Fetching the data for products and users
     const { data: stationeryProducts, isLoading: isLoadingProducts } = useGetAllProductsQuery(undefined);
-    const { data: userData, isLoading: isLoadingUsers } = useGetAllUserQuery(undefined);
+    const { data: userData, isLoading: isLoadingUsers } = useGetAllUserQuery({});
+    console.log(userData);
 
     // Filtering users by role
     const users = userData?.data?.filter((user) => user.role === "user");

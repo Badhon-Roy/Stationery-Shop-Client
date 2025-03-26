@@ -9,6 +9,7 @@ const productManagementApi = baseApi.injectEndpoints({
             query: (args) => {
                 // Base URL
                 let url = '/products/get-product';
+                console.log(url);
                 const params = new URLSearchParams();
                 if (args) {
                     args.forEach((item: TQueryParam) => {
@@ -17,9 +18,11 @@ const productManagementApi = baseApi.injectEndpoints({
                         }
                     });
                 }
-        
+                
                 url += `?${params.toString()}`;
-        
+                
+                console.log(params);
+                console.log('args =>', args);
                 return {
                     url: url,
                     method: "GET",

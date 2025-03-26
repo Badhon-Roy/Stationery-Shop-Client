@@ -9,10 +9,10 @@ import { toast } from "sonner";
 import { FiHeart } from "react-icons/fi";
 import { useAddToFavoriteProductMutation } from "@/redux/features/product/addedFavoriteManagementApi";
 
-type TProductCart = Pick<TProduct, '_id' | 'name' | 'image' | 'price' | 'inStock' | 'description'>;
+type TProductCart = Pick<TProduct, '_id' | 'name' | 'image' | 'price' | 'inStock' | 'brand'>;
 
 const ProductCart = ({ product }: { product: TProductCart }) => {
-    const { _id, name, image, inStock, description, price } = product;
+    const { _id, name, image, inStock, brand, price } = product;
     const [addToCartProduct] = useAddToCartProductMutation();
     const [addToFavoriteProduct] = useAddToFavoriteProductMutation();
     const linkRef = useRef<HTMLAnchorElement>(null);
@@ -72,24 +72,27 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
                     </button>
                     <img src={image} alt={name} className="object-cover w-full h-40 rounded-t-lg" />
 
-                    <div className="p-6">
-                        <h2 className="mb-2 text-xl font-bold text-[#3f4343]">
+                    <div className="p-2 md:p-6">
+                        <h2 className="md:block hidden mb-2 md:text-xl md:font-bold font-medium text-[#3f4343]">
                             {name.length > 20 ? name.slice(0, 20
                             ) + "..." : name}
                         </h2>
-                        <p className="text-sm text-gray-600">{description}</p>
-                        <p className="mt-2 text-xl font-semibold primaryColor">Price: {price} tk</p>
+                        <h2 className="md:hidden mb-2 md:text-xl md:font-bold font-medium text-[#3f4343]">
+                            {name.length > 12 ? name.slice(0, 12
+                            ) + "..." : name}
+                        </h2>
+                        <p className="md:text-[16px] text-sm">Brand: {brand}</p>
+                        <p className="mt-2 font-semibold md:text-xl primaryColor">{price} tk</p>
 
-                        <div className="flex items-center justify-between mt-4">
+                        <div className="flex items-center justify-center mt-4 lg:justify-between">
                             <span
-                                className={`text-sm font-semibold flex  items-center justify-center space-x-2 py-2 px-4 rounded-full ${inStock ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'}`}
+                                className={`hidden text-sm font-semibold xl:flex  items-center justify-center space-x-2 py-2 px-4 rounded-full ${inStock ? 'bg-gradient-to-r from-green-400 to-green-600 text-white' : 'bg-gradient-to-r from-red-400 to-red-600 text-white'}`}
                                 style={{
                                     boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                                     transition: "all 0.3s ease-in-out",
                                 }}
                             >
                                 <svg
-
                                     xmlns="http://www.w3.org/2000/svg"
                                     className="w-5 h-5"
                                     viewBox="0 0 20 20"
@@ -111,7 +114,7 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
                                 style={{
                                     borderRadius: "8px",
                                 }}
-                                className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-4 rounded-lg h-8 focus:outline-none"
+                                className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white md:px-4 px-2 rounded-lg h-8 focus:outline-none"
                             >
                                 Add To Cart
                             </button>

@@ -57,7 +57,7 @@ const Navbar = () => {
       element: "About"
     },
     {
-      path: `/dashboard/${(user as TUser)?.role}`,
+      path: `/dashboard/${(user as TUser)?.role}/${(user as TUser)?.role}Dashboard`,
       element: "Dashboard"
     },
   ]

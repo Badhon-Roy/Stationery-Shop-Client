@@ -10,11 +10,22 @@ import {
 import Loading from "@/components/loading/Loading";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
-
-
+import { Link, useLocation } from "react-router-dom";
+import ProductPagination from "@/components/Pagination";
+const useQueryParams = () => {
+    const location = useLocation();
+    return new URLSearchParams(location.search);
+};
 const GetAllProducts = () => {
-    const { data: stationeryProducts, isLoading } = useGetAllProductsQuery(undefined);
+    const queryParams = useQueryParams();
+    const currentPage = queryParams.get('page') || '1'; 
+    const limit = '12';
+    const { data: stationeryProducts, isLoading } = useGetAllProductsQuery(
+        [
+            { name: 'page', value: currentPage },
+            { name: 'limit', value: limit }
+        ]
+    );
     const [deleteProduct] = useDeleteProductMutation();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
@@ -77,7 +88,7 @@ const GetAllProducts = () => {
                             </TableCell>
                             <TableCell>{product?.name}</TableCell>
                             <TableCell>{product?.brand}</TableCell>
-                            <TableCell>{product?.category}</TableCell>
+                            <TableCell>{product?.category?.name}</TableCell>
                             <TableCell>{product?.quantity}</TableCell>
                             <TableCell>{product?.price}</TableCell>
                             <TableCell>
@@ -129,6 +140,8 @@ const GetAllProducts = () => {
                     </TableBody>
                 ))}
             </Table>
+
+            <ProductPagination totalPage={stationeryProducts?.meta?.totalPage || 1} />
         </div>
     );
 };

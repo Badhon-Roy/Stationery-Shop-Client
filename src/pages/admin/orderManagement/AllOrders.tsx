@@ -16,11 +16,24 @@ import {
 
 import { TbAlertTriangleFilled } from "react-icons/tb";
 import { DialogClose } from "@radix-ui/react-dialog";
+import ProductPagination from "@/components/Pagination";
+import { useLocation } from "react-router-dom";
 
-
+const useQueryParams = () => {
+    const location = useLocation();
+    return new URLSearchParams(location.search);
+};
 
 const AllOrders = () => {
-    const { data: getOrders, isLoading: addedCartLoading } = useGetOrdersQuery(undefined);
+    const queryParams = useQueryParams();
+    const currentPage = queryParams.get('page') || '1';
+    const limit = '12';
+    const { data: getOrders, isLoading: addedCartLoading } = useGetOrdersQuery(
+        {
+            page: currentPage,
+            limit: limit,
+        }
+    );
     const [updateOrderStatus] = useUpdateOrderStatusMutation();
     const [deleteOrder] = useDeleteOrderMutation();
     const [orderStatusData, setOrderStatusData] = useState<TOrder | null>(null);
@@ -114,19 +127,19 @@ const AllOrders = () => {
                                         <DialogTrigger>
                                             <button
                                                 style={{
-                                                    borderRadius: "8px",
+                                                    borderRadius: "50px",
                                                 }}
                                                 onClick={() => openUpdateModal(order)}
-                                                className="text-sm w-full font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 rounded-lg py-2 focus:outline-none"
+                                                className="text-sm w-[120px] rounded-full font-medium border border-[#fb5770] text-white bg-[#fb5770] hover:text-white px-4 py-2 focus:outline-none"
                                             >
                                                 {order?.status}
                                             </button>
                                         </DialogTrigger>
-                                        <DialogContent style={{borderRadius: '8px'}} className="max-w-sm p-6 bg-white shadow-xl">
+                                        <DialogContent style={{ borderRadius: '8px' }} className="max-w-sm p-6 bg-white shadow-xl">
                                             <DialogHeader className="text-center">
                                                 <DialogTitle className="text-xl font-semibold text-center">Are you sure?</DialogTitle>
                                                 <DialogDescription className="text-center text-gray-600">
-                                                     update this order status?
+                                                    update this order status?
                                                 </DialogDescription>
                                             </DialogHeader>
 
@@ -142,7 +155,7 @@ const AllOrders = () => {
                                                     </button>
                                                 </DialogClose>
                                                 <button
-                                                    onClick={()=>handleUpdate('Shipping')}
+                                                    onClick={() => handleUpdate('Shipping')}
                                                     style={{
                                                         borderRadius: "8px",
                                                     }}
@@ -154,7 +167,7 @@ const AllOrders = () => {
                                         </DialogContent>
                                     </Dialog>
                                         : <span
-                                            className={`text-sm font-semibold flex items-center justify-center gap-2 p-1 rounded-full 
+                                            className={`text-sm w-[120px] font-semibold flex items-center justify-center gap-2 p-1 rounded-full 
                                                 ${order?.status === "Shipping"
                                                     ? "bg-gradient-to-r from-green-400 to-green-600 text-white"
                                                     : "bg-gray-500 text-white"
@@ -190,7 +203,7 @@ const AllOrders = () => {
                                             Delete
                                         </button>
                                     </DialogTrigger>
-                                    <DialogContent style={{borderRadius: '8px'}} className="max-w-sm p-6 bg-white shadow-xl">
+                                    <DialogContent style={{ borderRadius: '8px' }} className="max-w-sm p-6 bg-white shadow-xl">
                                         <DialogHeader className="text-center">
                                             <TbAlertTriangleFilled className="w-12 h-12 mx-auto text-red-500" />
                                             <DialogTitle className="text-xl font-semibold text-center text-gray-800">
@@ -233,6 +246,7 @@ const AllOrders = () => {
                     </TableBody>
                 ))}
             </Table>
+            <ProductPagination totalPage={getOrders?.meta?.totalPage || 1} />
         </div>
     );
 };
