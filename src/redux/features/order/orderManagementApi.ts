@@ -8,7 +8,7 @@ const orderManagementApi = baseApi.injectEndpoints({
     getOrders: builder.query({
       query: ({ email, page, limit }) => {
         const params = new URLSearchParams();
-        
+
         if (email) {
           params.append('email', email);
         }
@@ -18,7 +18,7 @@ const orderManagementApi = baseApi.injectEndpoints({
         if (limit) {
           params.append('limit', limit);
         }
-    
+
         return {
           url: '/orders/get-order',
           method: 'GET',
@@ -33,14 +33,15 @@ const orderManagementApi = baseApi.injectEndpoints({
         };
       }
     }),
-    
+
 
     createOrder: builder.mutation({
-      query: (data) => ({
-        url: '/orders/create-order',
-        method: "POST",
-        body: data
-      }),
+      query: (data) => (
+        {
+          url: '/orders/create-order',
+          method: "POST",
+          body: data
+        }),
       invalidatesTags: ['order']
     }),
     updateOrderStatus: builder.mutation({

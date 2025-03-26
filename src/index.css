@@ -28,14 +28,14 @@ body {
     margin-bottom: 30px;
 }
 .dashboardTitle {
-    font-size: 18px;
+    font-size: 22px;
     text-align: center;
     color: #3f4343;
     font-weight: 700;
     margin-bottom: 10px;
 }
 .dashboardSubtitle {
-    font-size: 8px;
+    font-size: 12px;
     color: #3f4343;
     text-align: center;
     font-weight: 500;
@@ -50,10 +50,10 @@ body {
         font-size: 18px;
     }
     .dashboardTitle {
-        font-size: 20px;
+        font-size: 24px;
     }
     .dashboardSubtitle {
-        font-size: 9px;
+        font-size: 16px;
     }
 }
 
@@ -65,10 +65,10 @@ body {
         font-size: 20px;
     }
     .dashboardTitle {
-        font-size: 23px;
+        font-size: 28px;
     }
     .dashboardSubtitle {
-        font-size: 10px;
+        font-size: 20px;
     }
 }
 
@@ -80,10 +80,10 @@ body {
         font-size: 22px;
     }
     .dashboardTitle {
-        font-size: 25px;
+        font-size: 32px;
     }
     .dashboardSubtitle {
-        font-size: 11px;
+        font-size: 22px;
     }
 }
 

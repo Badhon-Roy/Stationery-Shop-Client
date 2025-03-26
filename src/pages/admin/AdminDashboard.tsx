@@ -1,21 +1,40 @@
 import Loading from "@/components/loading/Loading";
 import { useGetAllProductsQuery } from "@/redux/features/product/productManagementApi";
 import { useGetAllUserQuery } from "@/redux/features/user/userManagementApi";
+import { DashboardBarChart } from "./BarChart";
+import { useGetOrdersQuery } from "@/redux/features/order/orderManagementApi";
+import { DashboardPieChart } from "./PieChart";
+import { useGetAllCategoryQuery } from "@/redux/features/category/categoryManagementApi";
 
 const AdminDashboard = () => {
     // Fetching the data for products and users
     const { data: stationeryProducts, isLoading: isLoadingProducts } = useGetAllProductsQuery(undefined);
     const { data: userData, isLoading: isLoadingUsers } = useGetAllUserQuery({});
-    console.log(userData);
+    const { data: orders } = useGetOrdersQuery({})
+    const { data: categories } = useGetAllCategoryQuery(undefined)
 
     // Filtering users by role
     const users = userData?.data?.filter((user) => user.role === "user");
     const admins = userData?.data?.filter((user) => user.role === "admin");
-
+    const orderPending = orders?.data?.filter((item: any) => item?.status === "Pending")
+    const orderShipping = orders?.data?.filter((item: any) => item?.status === "Shipping")
     // Loading state for the page
     if (isLoadingProducts || isLoadingUsers) {
         return <Loading />;
     }
+
+    const barChartData = [
+        { browser: "products", history: stationeryProducts?.data?.length, fill: "#2eb88a" },
+        { browser: "users", history: userData?.data?.length, fill: "#e23670" },
+        { browser: "user", history: users?.length, fill: "#e88c30" },
+        { browser: "admin", history: admins?.length, fill: "#af57db" },
+    ];
+    const pieChartData = [
+        { browser: "orders", history: orders?.data?.length, fill: "#e23670" },
+        { browser: "pending", history: orderPending?.length, fill: "#2eb88a" },
+        { browser: "shipping", history: orderShipping?.length, fill: "#e88c30" }
+    ];
+
 
     return (
         <div >
@@ -26,9 +45,9 @@ const AdminDashboard = () => {
             </div>
 
             {/* Gradient Cards for User Count, Admin Count, and Product Count */}
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {/* New Gradient Card for User Data */}
-                <div className="p-6 bg-gradient-to-br from-[#4d90e0] via-[#7b99d4] to-[#aac4ea] shadow-lg rounded-xl">
+                <div className="p-6 bg-[#e23670] shadow-lg rounded-xl">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-3 bg-white rounded-full shadow">
                             <svg
@@ -52,7 +71,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Total Users Card */}
-                <div className="p-6 bg-gradient-to-br from-[#fb5770] via-[#ff7e91] to-[#ffb8c3] shadow-lg rounded-xl">
+                <div className="p-6 bg-[#e88c30] shadow-lg rounded-xl">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-3 bg-white rounded-full shadow">
                             <svg
@@ -76,7 +95,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Admins Card */}
-                <div className="p-6 bg-gradient-to-br from-[#7cc000] via-[#9adf57] to-[#c4f58b] shadow-lg rounded-xl">
+                <div className="p-6 bg-[#af57db] shadow-lg rounded-xl">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-3 bg-white rounded-full shadow">
                             <svg
@@ -100,7 +119,7 @@ const AdminDashboard = () => {
                 </div>
 
                 {/* Total Products Card */}
-                <div className="p-6 bg-gradient-to-br from-[#00c3e2] via-[#4bb5b6] to-[#80d0d3] shadow-lg rounded-xl">
+                <div className="p-6 shadow-lg bg-[#2eb88a] rounded-xl">
                     <div className="flex items-center gap-3 mb-3">
                         <div className="p-3 bg-white rounded-full shadow">
                             <svg
@@ -122,8 +141,108 @@ const AdminDashboard = () => {
                     </div>
                     <p className="text-lg font-bold text-white">Total Products</p>
                 </div>
+                {/* Total Orders Card */}
+                <div className="p-6 shadow-lg bg-[#e21d48] rounded-xl">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="p-3 bg-white rounded-full shadow">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6 text-[#00c3e2]"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M5 3l4 4h10M5 3v12h12V3H5zm4 14v4h8v-4"
+                                />
+                            </svg>
+                        </div>
+                        <span className="text-3xl font-bold text-white">{categories?.data?.length}+</span>
+                    </div>
+                    <p className="text-lg font-bold text-white">Total Category</p>
+                </div>
+                {/* Total Orders Card */}
+                <div className="p-6 shadow-lg bg-[#2563eb] rounded-xl">
+                    <div className="flex items-center gap-3 mb-3">
+                        <div className="p-3 bg-white rounded-full shadow">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-6 w-6 text-[#00c3e2]"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M5 3l4 4h10M5 3v12h12V3H5zm4 14v4h8v-4"
+                                />
+                            </svg>
+                        </div>
+                        <span className="text-3xl font-bold text-white">{orders?.data?.length}+</span>
+                    </div>
+                    <p className="text-lg font-bold text-white">Total Order</p>
+                </div>
 
 
+            </div>
+            <div className="flex flex-col-reverse gap-5 space-y-8 md:flex-row md:space-y-0 md:mt-8">
+                <div className="space-y-8 md:w-2/3 md:flex gap-7 md:space-y-0">
+                    <DashboardBarChart chartData={barChartData} />
+                    <DashboardPieChart chartData={pieChartData} />
+                </div>
+                <div className="flex justify-between gap-8 md:block md:flex-1">
+                    {/* Total Shipping Card */}
+                    <div className="p-6 shadow-lg bg-[#2563eb] rounded-xl flex-1">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="p-3 bg-white rounded-full shadow">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 text-[#00c3e2]"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M5 3l4 4h10M5 3v12h12V3H5zm4 14v4h8v-4"
+                                    />
+                                </svg>
+                            </div>
+                            <span className="text-3xl font-bold text-white">{orderPending?.length}+</span>
+                        </div>
+                        <p className="text-lg font-bold text-white">Order Pending</p>
+                    </div>
+                    {/* Total Orders Card */}
+                    <div className="p-6 shadow-lg bg-[#2563eb] rounded-xl flex-1 md:mt-8">
+                        <div className="flex items-center gap-3 mb-3">
+                            <div className="p-3 bg-white rounded-full shadow">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-6 w-6 text-[#00c3e2]"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M5 3l4 4h10M5 3v12h12V3H5zm4 14v4h8v-4"
+                                    />
+                                </svg>
+                            </div>
+                            <span className="text-3xl font-bold text-white">{orderShipping?.length}+</span>
+                        </div>
+                        <p className="text-lg font-bold text-white">Order Shipping</p>
+                    </div>
+                </div>
             </div>
         </div>
     );

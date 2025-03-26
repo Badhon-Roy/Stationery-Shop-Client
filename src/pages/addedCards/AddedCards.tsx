@@ -8,17 +8,18 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { MdDelete } from 'react-icons/md';
 import { FaPlus, FaMinus, FaRegHeart, FaArrowRight } from 'react-icons/fa';
 import { toast } from "sonner";
-import { useCreateOrderMutation } from "@/redux/features/order/orderManagementApi";
 import { useAddToFavoriteProductMutation } from "@/redux/features/product/addedFavoriteManagementApi";
+import { useState } from "react";
 
 const AddedCards = () => {
     const [deleteAddedCart] = useDeleteAddToCartProductMutation();
     const [updateCartQuantity] = useUpdateCartQuantityMutation();
-    const [createOrder] = useCreateOrderMutation();
     const token = useAppSelector(selectCurrentToken);
     const [addToFavoriteProduct] = useAddToFavoriteProductMutation();
     const location = useLocation();
     const navigate = useNavigate();
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [timeRemaining, setTimeRemaining] = useState(0);
 
     let user: TUser | null = null;
     if (token) {
@@ -38,11 +39,29 @@ const AddedCards = () => {
     const totalPrice = subtotal + shipping;
 
 
+    const handleClick = (productId: string, change: number) => {
+        // Disable buttons for 30 seconds
+        setIsDisabled(true);
+        setTimeRemaining(10);
+
+        handleQuantityChange(productId, change);
+
+        // Start the countdown for the next available click
+        const countdown = setInterval(() => {
+            setTimeRemaining((prev) => {
+                if (prev <= 1) {
+                    clearInterval(countdown);
+                    setIsDisabled(false); // Re-enable the buttons after the countdown
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
 
 
     const handleQuantityChange = async (productId: string, change: number) => {
         if (!user) {
-            console.error("User is not defined!");
             return;
         }
         try {
@@ -51,9 +70,8 @@ const AddedCards = () => {
                 productId,
                 change
             }).unwrap();
-        } catch (error) {
-            console.log(error);
-            toast.error('Something went wrong!, Please try again')
+        } catch (error: any) {
+            toast.error(error?.data?.message || 'Something went wrong!, Please try again')
         }
     };
 
@@ -90,34 +108,17 @@ const AddedCards = () => {
     };
 
     const handleOrder = async () => {
-        const toastId = toast.loading('Processing...')
-        try {
-            const orderProducts = addedCartProduct?.data[0]?.products.map((item: any) => {
-                return { product: item.productId._id, quantity: item.quantity }
-            });
-            console.log(orderProducts);
-            const orderInfo = {
-                email: user?.email,
-                products: orderProducts
-            }
-            console.log(orderInfo);
-            const res = await createOrder(orderInfo)
-            if (res?.data?.success) {
-                setTimeout(() => {
-                    window.location.href = (res.data.data)
-                }, 1000);
-            }
-            else if (res?.error) {
-                toast.error('Something went wrong!', { id: toastId })
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error('Something went wrong!', { id: toastId })
+        const orderProducts = addedCartProduct?.data[0]?.products.map((item: any) => {
+            return { product: item.productId._id, quantity: item.quantity }
+        });
+        const orderInfo = {
+            email: user?.email,
+            products: orderProducts
         }
-
+        navigate("/placeOrder", { state: { orderInfo } })
     }
 
-    const handleAddToFavorite = async (_id : string) => {
+    const handleAddToFavorite = async (_id: string) => {
         if (!user || !((user as TUser)?.email)) {
             navigate("/login", { state: { from: location } });
         } else {
@@ -126,7 +127,6 @@ const AddedCards = () => {
                 product: _id
             }
             const res = await addToFavoriteProduct(favoriteInfo)
-            console.log(res);
             if (res?.data?.success) {
                 toast.success(res?.data?.message)
             } else if (res?.error) {
@@ -140,37 +140,37 @@ const AddedCards = () => {
 
 
     return (
-        <div>
+        <div className="mx-4">
             <h2 className="font-bold sectionTitle">My<span className="primaryColor"> Added</span> Products</h2>
             <p className="sectionSubtitle">Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.</p>
 
             <div>
                 {
                     addedCartProduct?.data?.map((item: any) => item.products?.length)[0] > 0 ? (
-                        <div className="flex-row gap-10 py-10 lg:flex">
+                        <div className="flex-row gap-5 py-10 xl:gap-10 xl:flex">
                             {/* Product Details and Cart Summary Section */}
-                            <div className="w-full md:w-8/12">
+                            <div className="w-full xl:w-8/12">
 
                                 {/* Cart Items Section */}
                                 <div className="p-5 bg-white rounded-lg shadow-md">
                                     {
                                         addedCartProduct?.data[0]?.products?.map((item: any) => (
-                                            <div className="flex pb-5 mb-5 border-b" key={item._id}>
+                                            <div className="pb-5 mb-5 border-b md:flex" key={item._id}>
                                                 {/* Item Image */}
-                                                <div className="flex items-center justify-center w-3/12">
-                                                    <img src={item?.productId?.image} alt={item?.productId?.name} className="object-cover w-full h-auto rounded-lg" />
+                                                <div className="flex items-center justify-center md:w-3/12 ">
+                                                    <img src={item?.productId?.image} alt={item?.productId?.name} className="object-cover w-full h-[150px] rounded-lg" />
                                                 </div>
 
                                                 {/* Item Details */}
-                                                <div className="w-5/12 pl-4">
-                                                    <h1 className="text-xl font-semibold text-gray-800">{item?.productId?.name}</h1>
+                                                <div className="pl-4 md:w-5/12">
+                                                    <h1 className="font-semibold text-gray-800 xl:text-xl">{item?.productId?.name}</h1>
                                                     <h2 className="mt-2 text-lg text-gray-600">{item?.productId?.brand}</h2>
                                                     <p className="mt-2 text-sm text-gray-500">Price: {item?.productId?.price} TK</p>
                                                     <div className="flex items-center gap-4 mt-4">
                                                         <button onClick={() => handleDelete(item?.productId?._id)} className="text-red-500 hover:text-red-700">
                                                             <MdDelete className="text-3xl" />
                                                         </button>
-                                                        <button onClick={()=>handleAddToFavorite(item?.productId?._id)} className="flex items-center text-pink-500 hover:text-pink-700">
+                                                        <button onClick={() => handleAddToFavorite(item?.productId?._id)} className="flex items-center text-pink-500 hover:text-pink-700">
                                                             <FaRegHeart className="text-2xl" />
                                                             <span className="ml-2">Add to Wishlist</span>
                                                         </button>
@@ -178,13 +178,14 @@ const AddedCards = () => {
                                                     <h2 className="mt-2 text-sm text-red-600">Only {item?.productId?.quantity} copies available</h2>
                                                 </div>
 
+
                                                 {/* Quantity Control */}
-                                                <div className="flex items-center justify-center w-2/12 gap-4">
+                                                <div className="flex items-center justify-center gap-2 mt-4 md:w-2/12 md:mt-0">
                                                     {/* Decrease Quantity Button */}
                                                     <button
-                                                        onClick={() => handleQuantityChange(item?.productId?._id, -1)}
+                                                        onClick={() => handleClick(item?.productId?._id, -1)}
                                                         className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400"
-                                                        disabled={item?.quantity === 1}
+                                                        disabled={item?.quantity === 1 || isDisabled}
                                                     >
                                                         <FaMinus className="text-xl text-gray-700" />
                                                     </button>
@@ -195,18 +196,20 @@ const AddedCards = () => {
                                                     <p>{item?.quantity}</p>
                                                     {/* Increase Quantity Button */}
                                                     <button
-                                                        onClick={() => handleQuantityChange(item?.productId?._id, 1)}
+                                                        onClick={() => handleClick(item?.productId?._id, 1)}
                                                         className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400"
-                                                        disabled={item?.quantity === 10}
+                                                        disabled={item?.quantity === 10 || isDisabled}
                                                     >
                                                         <FaPlus className="text-xl text-gray-700" />
                                                     </button>
 
+                                                    {isDisabled && <p className="text-sm text-gray-500">Wait {timeRemaining}s</p>}
                                                 </div>
 
 
+
                                                 {/* Item Price */}
-                                                <div className="flex items-center justify-center gap-4 ms-auto" >
+                                                <div className="flex items-center justify-center gap-4 mt-4 ms-auto md:mt-0" >
                                                     <p className="text-lg font-semibold text-[#fb5770]">{(item?.productId?.price * item?.quantity).toFixed(2)} TK</p>
 
                                                 </div>
@@ -216,9 +219,11 @@ const AddedCards = () => {
 
                                     <hr className="my-5 border-t-2 border-gray-200" />
 
+
+
                                     {/* Promo Section */}
                                     <div className="flex items-center justify-between">
-                                        <p className="text-sm text-gray-600">Apply Promo Code or Voucher on the next page.</p>
+                                        <p className="hidden text-sm text-gray-600 md:block">Apply Promo Code or Voucher on the next page.</p>
                                         <div className="flex gap-6">
                                             <button
                                                 onClick={handleOrder}
