@@ -7,17 +7,19 @@ const productManagementApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllProducts: builder.query({
             query: (args) => {
-                // Build dynamic URL query parameters
+                // Base URL
                 let url = '/products/get-product';
+                const params = new URLSearchParams();
                 if (args) {
-                    const params = new URLSearchParams();
                     args.forEach((item: TQueryParam) => {
                         if (item.value) {
                             params.append(item.name, item.value as string);
                         }
                     });
-                    url += `?${params.toString()}`;
                 }
+        
+                url += `?${params.toString()}`;
+        
                 return {
                     url: url,
                     method: "GET",
@@ -31,6 +33,7 @@ const productManagementApi = baseApi.injectEndpoints({
                 };
             },
         }),
+        
 
 
         // get single product

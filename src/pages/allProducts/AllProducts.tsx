@@ -1,110 +1,65 @@
 import ProductCart from "@/components/ProductCart";
-import { categoryOption } from "@/constants/category";
 import { useGetAllProductsQuery } from "@/redux/features/product/productManagementApi";
-import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-type TQueryParam = {
-    name: string;
-    value: any;
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import FilterSidebar from "./FilterSidebar";
+import ProductPagination from "@/components/Pagination";
+import { useLocation } from "react-router-dom";
+
+const useQueryParams = () => {
+    const location = useLocation();
+    return new URLSearchParams(location.search);
 };
-interface SearchFormValues {
-    nameTerm: string;
-    brandTerm: string;
-    categoryTerm: string;
-  }
 
 const AllProducts = () => {
-    // Properly type the state for search query
-    const [searchQuery, setSearchQuery] = useState<TQueryParam[] | undefined>(undefined);
-    const { data: stationeryProducts } = useGetAllProductsQuery(searchQuery); // Fetch data based on search query
-    const { register, handleSubmit} = useForm<SearchFormValues>();
-    // Handle form submission
-    // const onSubmit: SubmitHandler<SearchFormValues> = (data) => {
-    //     console.log(data);
-        
-    //     // Build query args dynamically for the API
-    //     const args: TQueryParam[] | undefined =
-    //       data.nameTerm || data.brandTerm || data.categoryTerm
-    //         ? [
-    //             { name: "name", value: data.nameTerm },
-    //             { name: "brand", value: data.brandTerm },
-    //             { name: "category", value: data.categoryTerm },
-    //           ]
-    //         : undefined;
-      
-    //     console.log(args);
-    //     setSearchQuery(args);
-    //   };
+    const queryParams = useQueryParams();
+    const currentPage = queryParams.get('page') || '1'; 
+    const limit = '12';
 
-
-    const onSubmit: SubmitHandler<SearchFormValues> = (data) => {
-        console.log(data);
-      
-        const args: TQueryParam[] | undefined =
-          data.nameTerm || data.brandTerm || data.categoryTerm
-            ? [
-                { name: "name", value: data.nameTerm },
-                { name: "brand", value: data.brandTerm },
-                { name: "category", value: data.categoryTerm },
-              ]
-            : undefined;
-      
-        console.log(args);
-        setSearchQuery(args);
-      };
-
+    // Fetch products with dynamic page and category filters
+    const { data: stationeryProducts, isLoading: isProductsLoading } = useGetAllProductsQuery([
+        { name: 'page', value: currentPage },
+        { name: 'limit', value: limit }
+    ]);
 
     return (
         <div className="px-4 my-8">
             <h2 className="font-bold sectionTitle">Our <span className="primaryColor">All</span> Products</h2>
-            <p className="sectionSubtitle">Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.</p>
-            <div className="my-4">
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="items-center gap-4 rounded-md md:flex"
-                    style={{ borderRadius: "4px" }}
-                >
-                    <input
-                        type="text"
-                        placeholder="Search by name..."
-                        {...register("nameTerm")}
-                        style={{borderRadius: '4px'}}
-                        className="flex-grow px-4 py-2 md:w-[200px] w-full md:mt-0 mb-4  border-2 border-[#fb5770] outline-none"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Search by brand..."
-                        {...register("brandTerm")}
-                        style={{borderRadius: '4px'}}
-                        className="flex-grow px-4 py-2 md:w-[200px] w-full md:mt-0 mb-4  border-2 border-[#fb5770] outline-none"
-                    />
-                    <select
-                        {...register("categoryTerm")}
-                        style={{borderRadius: '4px'}}
-                        className="flex-grow px-4 py-2 md:w-[200px] w-[55%] border-2 border-[#fb5770] outline-none"
-                        defaultValue=""
-                    >
-                        <option value="" disabled>Select a category</option>
-                        {
-                            categoryOption?.map(product => <option value={product?.value} key={product?.label}>{product?.label}</option>)
+            <p className="sectionSubtitle">
+                Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.
+            </p>
+
+            <div className="justify-between gap-4 md:flex">
+                <div className="md:w-1/5">
+                    <FilterSidebar/>
+                </div>
+                <div className="mt-8 md:w-4/5 md:mt-0">
+                    <div className="grid grid-cols-1 gap-5 lg:grid-cols-4 md:grid-cols-2">
+                        {isProductsLoading
+                            ? [...Array(12)].map((_, index) => (
+                                <div key={index} className="w-full p-4 bg-white border rounded-lg shadow-sm">
+                                    <Skeleton height={200} className="w-full rounded-lg" />
+                                    <Skeleton width="80%" height={20} className="mx-auto mt-3" />
+                                    <Skeleton width="50%" height={20} className="mx-auto mt-2" />
+                                    <div className="flex items-center justify-between mt-3">
+                                        <div className="inline-block w-2/5">
+                                            <Skeleton height={30} className="rounded-md" />
+                                        </div>
+                                        <div className="inline-block w-2/5">
+                                            <Skeleton height={30} className="rounded-md" />
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                            : stationeryProducts?.data?.map(product => (
+                                <ProductCart product={product} key={product?._id} />
+                            ))
                         }
-                    </select>
+                    </div>
 
-                    <button
-                        type="submit"
-                        style={{borderRadius: '4px'}}
-                        className="ml-2 md:w-auto w-[40%] md:ms-0 mr-auto px-4 py-2 bg-[#fb5770] text-white hover:bg-[#e04d62]"
-                    >
-                        Search
-                    </button>
-                </form>
-            </div>
-
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-4 md:grid-cols-2">
-                {
-                    stationeryProducts?.data?.map(product => <ProductCart product={product} key={product?._id}></ProductCart>)
-                }
-
+                    {/* Pagination */}
+                    <ProductPagination totalPage={stationeryProducts?.meta?.totalPage || 1} />
+                </div>
             </div>
         </div>
     );

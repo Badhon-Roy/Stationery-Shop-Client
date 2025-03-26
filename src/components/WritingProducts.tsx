@@ -1,10 +1,11 @@
 import { useGetAllProductsQuery } from "@/redux/features/product/productManagementApi";
 import { TProduct } from "@/types";
 import { Link } from "react-router-dom";
-
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const WritingProducts = () => {
-    const { data: products } = useGetAllProductsQuery(undefined)
+    const { data: products, isLoading } = useGetAllProductsQuery(undefined)
     const writingProducts = products?.data?.filter((product: TProduct) => product?.category?.name === 'Writing')
     return (
         <div className="my-32 ">
@@ -22,16 +23,28 @@ const WritingProducts = () => {
             <div className="flex justify-between gap-8">
                 <div className="grid w-2/3 grid-cols-4 gap-4">
                     {
-                        writingProducts?.slice(0, 8)?.map((product: TProduct) => (
-                            <div key={product?._id} className="bg-white border shadow rounded-xl">
-                                <img className="h-[200px] w-full object-cover rounded-t-xl" src={product?.image} alt="" />
-                                <div className="p-4">
-                                    <Link to={`/productDetails/${product?._id}`} >
-                                        <h2 className="text-lg font-medium text-center text-gray-700 hover:text-[#fb5770] hover:underline">{product?.name}</h2></Link>
-                                    <p className="text-[#fb5770] text-lg font-bold text-center">{product?.price}tk</p>
+                        isLoading
+                            ?
+                            [...Array(8)].map((_, index) => (
+                                <div key={index} className="bg-white border shadow rounded-xl">
+                                    <Skeleton height={200} className="rounded-t-xl" />
+                                    <div className="p-4">
+                                        <Skeleton width="80%" height={20} className="mx-auto" />
+                                        <Skeleton width="50%" height={20} className="mx-auto mt-2" />
+                                    </div>
                                 </div>
-                            </div>
-                        ))
+                            ))
+                            :
+                            writingProducts?.slice(0, 8)?.map((product: TProduct) => (
+                                <div key={product?._id} className="bg-white border shadow rounded-xl">
+                                    <img className="h-[200px] w-full object-cover rounded-t-xl" src={product?.image} alt="" />
+                                    <div className="p-4">
+                                        <Link to={`/productDetails/${product?._id}`} >
+                                            <h2 className="text-lg font-medium text-center text-gray-700 hover:text-[#fb5770] hover:underline">{product?.name}</h2></Link>
+                                        <p className="text-[#fb5770] text-lg font-bold text-center">{product?.price}tk</p>
+                                    </div>
+                                </div>
+                            ))
                     }
                 </div>
                 <div className="w-1/3">

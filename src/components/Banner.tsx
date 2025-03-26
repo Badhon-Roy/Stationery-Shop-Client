@@ -2,9 +2,11 @@ import { useGetAllCategoryQuery } from "@/redux/features/category/categoryManage
 import { TCategory } from "@/types";
 import BookImage from "../assets/images/banner.png"
 import { Link } from "react-router-dom";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const Banner = () => {
-    const { data: categories } = useGetAllCategoryQuery(undefined);
+    const { data: categories, isLoading } = useGetAllCategoryQuery(undefined);
 
     return (
         <div>
@@ -12,7 +14,14 @@ const Banner = () => {
                 <div className="w-1/4 mt-8">
                     <h2 className="mb-4 ml-2 text-xl">Browse Categories</h2>
                     <div >
-                        {
+                        {isLoading ?
+                            [...Array(10)].map((_, index) => (
+                                <div key={index} className="flex items-center gap-2 px-4 py-[6px] border rounded-lg shadow-sm">
+                                    <Skeleton circle height={24} width={24} />
+                                    <Skeleton width="80%" height={16} />
+                                </div>
+                            ))
+                            :
                             categories?.data?.slice(0, 10)?.map((category: TCategory) => (
                                 <div key={category?._id}>
                                     <Link to='/'>
