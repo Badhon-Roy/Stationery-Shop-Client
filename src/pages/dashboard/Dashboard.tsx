@@ -31,6 +31,8 @@ const Dashboard = () => {
   const userPaths = [
     { path: `/dashboard/${role}/userDashboard`, element: "Dashboard" },
     { path: `/dashboard/${role}/viewOrders`, element: "View Orders" },
+    { path: `/dashboard/${role}/createBlog`, element: "Create Blog" },
+    { path: `/dashboard/${role}/myBlog`, element: "My Blog" },
     { path: `/dashboard/${role}/userProfile`, element: "Profile" },
     { path: `/`, element: "Home" },
   ];

@@ -14,7 +14,7 @@ body {
 
 
 .sectionTitle {
-    font-size: 36px;
+    font-size: 25px;
     text-align: center;
     color: #3f4343;
     font-weight: 700;
@@ -44,7 +44,7 @@ body {
 
 @media (min-width: 576px) { 
     .sectionTitle {
-        font-size: 40px;
+        font-size: 30px;
     }
     .sectionSubtitle {
         font-size: 18px;
@@ -59,7 +59,7 @@ body {
 
 @media (min-width: 768px) {
     .sectionTitle {
-        font-size: 46px;
+        font-size: 35px;
     }
     .sectionSubtitle {
         font-size: 20px;
@@ -74,7 +74,7 @@ body {
 
 @media (min-width: 1024px) {
     .sectionTitle {
-        font-size: 50px;
+        font-size: 40px;
     }
     .sectionSubtitle {
         font-size: 22px;
@@ -89,7 +89,7 @@ body {
 
 @media (min-width: 1280px) { 
     .sectionTitle {
-        font-size: 56px;
+        font-size: 45px;
     }
     .sectionSubtitle {
         font-size: 24px;

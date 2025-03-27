@@ -20,11 +20,11 @@ const OrderPlace = () => {
 
     const productIds = orderInfo?.products?.map((item: any) => item?.product);
     const [createOrder] = useCreateOrderMutation()
-    
+
     const [fetchedProducts, setFetchedProducts] = useState<any>([]);
     useEffect(() => {
         if (productIds.length > 0) {
-            Promise.all(productIds?.map((id: string) => fetch(`http://localhost:5000/api/v1/products/get-product/${id}`).then(res => res.json())))
+            Promise.all(productIds?.map((id: string) => fetch(`https://stationery-shop-blond.vercel.app/api/v1/products/get-product/${id}`).then(res => res.json())))
                 .then(setFetchedProducts)
                 .catch(err => console.error(err));
         }
@@ -124,6 +124,37 @@ const OrderPlace = () => {
                                 <option value="Dhaka">Dhaka</option>
                                 <option value="Chattogram">Chattogram</option>
                                 <option value="Khulna">Khulna</option>
+                                <option value="Rajshahi">Rajshahi</option>
+                                <option value="Barishal">Barishal</option>
+                                <option value="Sylhet">Sylhet</option>
+                                <option value="Rangpur">Rangpur</option>
+                                <option value="Mymensingh">Mymensingh</option>
+                                <option value="Cumilla">Cumilla</option>
+                                <option value="Narayanganj">Narayanganj</option>
+                                <option value="Bogra">Bogra</option>
+                                <option value="Gazipur">Gazipur</option>
+                                <option value="Tangail">Tangail</option>
+                                <option value="Jessore">Jessore</option>
+                                <option value="Shariatpur">Shariatpur</option>
+                                <option value="Meherpur">Meherpur</option>
+                                <option value="Chandpur">Chandpur</option>
+                                <option value="Pabna">Pabna</option>
+                                <option value="Moulvibazar">Moulvibazar</option>
+                                <option value="Netrakona">Netrakona</option>
+                                <option value="Khagrachari">Khagrachari</option>
+                                <option value="Noakhali">Noakhali</option>
+                                <option value="Lalmonirhat">Lalmonirhat</option>
+                                <option value="Dinajpur">Dinajpur</option>
+                                <option value="Rajbari">Rajbari</option>
+                                <option value="Naogaon">Naogaon</option>
+                                <option value="Patuakhali">Patuakhali</option>
+                                <option value="Sirajganj">Sirajganj</option>
+                                <option value="Kishoreganj">Kishoreganj</option>
+                                <option value="Khulna">Khulna</option>
+                                <option value="Rangamati">Rangamati</option>
+                                <option value="Satkhira">Satkhira</option>
+                                <option value="Brahmanbaria">Brahmanbaria</option>
+                                <option value="Jhalokathi">Jhalokathi</option>
                             </select>
                             {errors.division && <p className="mt-1 text-xs text-red-500">{errors.division.message}</p>}
                         </div>

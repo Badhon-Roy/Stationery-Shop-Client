@@ -40,18 +40,18 @@ const AddedFavorites = () => {
     };
 
     return (
-        <div>
+        <div className="mx-4 lg:mx-0">
             <h2 className="font-bold sectionTitle">My<span className="primaryColor"> Favorite</span> Products</h2>
             <p className="sectionSubtitle">Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.</p>
             <div className="my-8">
                 {
-                    addedFavorite?.data?.length > 0 ? <div className="grid grid-cols-2 gap-8">
+                    addedFavorite?.data?.length > 0 ? <div className="grid gap-8 md:grid-cols-2">
                         {
                             addedFavorite?.data?.map((item: any) => (
-                                <div className="flex border" key={item?._id}>
+                                <div className="border md:flex" key={item?._id}>
                                     {/* Item Image */}
                                     <div className="flex items-center justify-center object-cover">
-                                        <img src={item?.product?.image} alt={item?.product?.name} className="object-cover w-[250px] h-[200px] rounded-lg" />
+                                        <img src={item?.product?.image} alt={item?.product?.name} className="object-cover md:w-[250px] w-full h-[150px] md:h-[200px] rounded-lg" />
                                     </div>
 
                                     {/* Item Details */}

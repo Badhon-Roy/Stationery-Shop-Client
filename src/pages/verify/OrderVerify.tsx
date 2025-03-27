@@ -8,22 +8,22 @@ import Loading from "@/components/loading/Loading";
 import { FaCheckCircle } from "react-icons/fa";
 
 export type TOrder = {
-    _id :string;
+    _id: string;
     createdAt: string;
     email: string;
     totalPrice: number;
     transaction: {
         id: string,
-        transactionStatus : string
+        transactionStatus: string
     };
     status: string;
     products: Product[];
-  };
-  
-  type Product = {
+};
+
+type Product = {
     product: any;
-    quantity : number;
-  };
+    quantity: number;
+};
 
 const OrderVerify = () => {
 
@@ -40,8 +40,14 @@ const OrderVerify = () => {
         return <Loading />
     }
 
-    const { createdAt, email, totalPrice, transaction, status, products } = getOrders?.data?.[0] as TOrder;
-    console.log(products);
+    const { email, totalPrice, transaction, status, products, createdAt } = getOrders?.data?.[0] as TOrder;
+    const createdDate = new Date(createdAt);
+
+    const day = String(createdDate.getDate()).padStart(2, '0');
+    const month = String(createdDate.getMonth() + 1).padStart(2, '0');
+    const year = createdDate.getFullYear();
+
+    const formattedDate = `${day}/${month}/${year}`;
 
 
     return (
@@ -56,7 +62,7 @@ const OrderVerify = () => {
                     <p className="text-white"><strong>Email:</strong> {email}</p>
                     <p className="text-white"><strong>Total Products:</strong> {products?.length}</p>
                     <p className="text-white"><strong>Total Price:</strong> {totalPrice}tk</p>
-                    <p className="text-white"><strong>Date:</strong> {new Date(createdAt)?.toLocaleDateString()}</p>
+                    <p className="text-white"><strong>Date:</strong>{formattedDate} </p>
                 </div>
                 <div className="space-y-2">
                     <p className="text-white"><strong>Status:</strong> {status}</p>

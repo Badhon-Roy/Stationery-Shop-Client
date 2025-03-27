@@ -11,12 +11,17 @@ import GetAllProducts from "@/pages/admin/productManagement/GetAllProducts";
 import UpdateProduct from "@/pages/admin/productManagement/updateProduct";
 import UserData from "@/pages/admin/userManagement/UserData";
 import AllProducts from "@/pages/allProducts/AllProducts";
+import BlogsPage from "@/pages/blog/Blog";
+import BlogDetails from "@/pages/blogDetails/BlogDetails";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Home from "@/pages/home/Home";
 import Login from "@/pages/login/Login";
 import Order from "@/pages/order/Order";
 import ProductDetails from "@/pages/productDetails/ProductDetails";
 import SignUp from "@/pages/signUp/SignUp";
+import CreateBlog from "@/pages/user/blogManagement/CreateBlog";
+import MyBlog from "@/pages/user/blogManagement/MyBlog";
+import UpdateBlog from "@/pages/user/blogManagement/UpdateBlog";
 import ViewOrders from "@/pages/user/orderManagement/ViewOrders";
 import UserDashboard from "@/pages/user/UserDashboard";
 import UserProfile from "@/pages/user/UserProfile";
@@ -36,6 +41,14 @@ const router = createBrowserRouter([
             {
                 path: '/about',
                 element: <About />
+            },
+            {
+                path: '/blogs',
+                element: <BlogsPage />
+            },
+            {
+                path: '/blogs/:id',
+                element: <BlogDetails />
             },
             {
                 path: '/allProducts',
@@ -79,10 +92,6 @@ const router = createBrowserRouter([
         path: '/dashboard/:role',
         element: <ProtectedRoute><Dashboard /></ProtectedRoute>,
         children: [
-            // {
-            //     path: '',
-            //     element: <Navigate to="/dashboard/admin/adminDashboard" replace />,
-            // },
             {
                 path: 'adminDashboard',
                 index: true,
@@ -116,6 +125,18 @@ const router = createBrowserRouter([
             {
                 path: 'viewOrders',
                 element: <ProtectedRoute role="user"><ViewOrders /></ProtectedRoute>
+            },
+            {
+                path: 'createBlog',
+                element: <ProtectedRoute role="user"><CreateBlog /></ProtectedRoute>
+            },
+            {
+                path: 'myBlog',
+                element: <ProtectedRoute role="user"><MyBlog /></ProtectedRoute>
+            },
+            {
+                path: 'update/:id',
+                element: <ProtectedRoute role="user"><UpdateBlog /></ProtectedRoute>
             },
             {
                 path: 'userProfile',

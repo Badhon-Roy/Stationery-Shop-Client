@@ -6,6 +6,7 @@ import FilterSidebar from "./FilterSidebar";
 import { useLocation } from "react-router-dom";
 import { TProduct } from "@/types";
 import ProductPagination from "@/components/Pagination";
+import Loading from "@/components/loading/Loading";
 
 const useQueryParams = () => {
     const location = useLocation();
@@ -14,21 +15,25 @@ const useQueryParams = () => {
 
 const AllProducts = () => {
     const queryParams = useQueryParams();
-    console.log('query', queryParams);
     const currentPage = queryParams.get('page') || '1';
+    const limit = '12';
     const category = queryParams.get('category');
+    const brand = queryParams.get('brand');
     const minPrice = queryParams.get('minPrice');
     const maxPrice = queryParams.get('maxPrice');
-    const limit = '12';
 
     // Fetch products with dynamic page and category filters
     const { data: stationeryProducts, isLoading: isProductsLoading } = useGetAllProductsQuery([
         { name: 'category', value: category },
+        { name: 'brand', value: brand },
         { name: 'maxPrice', value: maxPrice },
         { name: 'minPrice', value: minPrice },
         { name: 'page', value: currentPage },
         { name: 'limit', value: limit }
     ]);
+    if(isProductsLoading){
+        return <Loading/>
+    }
 
     return (
         <div className="px-4 my-8">

@@ -1,25 +1,35 @@
-import { TBlog } from "./Blogs";
+import { TBlog } from "@/types";
+import { Link } from "react-router-dom";
 
-const BlogCart = ({ image, title, date, author, isNew }: TBlog) => {
+
+const BlogCart = ({ blog }: { blog: TBlog }) => {
+    const { _id,title, thumbnail, category, user, createdAt } = blog;
+    const createdDate = new Date(createdAt);
+
+    const day = String(createdDate.getDate()).padStart(2, '0');
+    const month = String(createdDate.getMonth() + 1).padStart(2, '0');
+    const year = createdDate.getFullYear();
+
+    const formattedDate = `${day}/${month}/${year}`;
+
     return (
         <div className="relative overflow-hidden transition-all duration-300 bg-white shadow-lg group rounded-2xl hover:shadow-2xl">
-            {/* Blog Image */}
             <div className="relative overflow-hidden rounded-t-2xl">
                 <img
-                    src={image}
+                    src={thumbnail}
                     alt={title}
                     className="object-cover w-full h-[200px] transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 transition-opacity duration-300 opacity-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent group-hover:opacity-100"></div>
                 <span
-                    className={`text-sm absolute top-1 left-1 font-semibold flex items-center justify-center space-x-2 py-2 px-4 rounded-full ${isNew && 'bg-gradient-to-r from-green-400 to-green-600 text-white'}`}
+                    className={`text-sm absolute top-1 left-1 font-semibold flex items-center justify-center space-x-2 py-2 px-4 rounded-full ${category && 'bg-gradient-to-r from-green-400 to-green-600 text-white'}`}
                     style={{
                         boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                         transition: "all 0.3s ease-in-out",
                     }}
                 >
                     <span>
-                        {isNew && "New"}
+                        {category && `${category}`}
                     </span>
                 </span>
             </div>
@@ -27,7 +37,7 @@ const BlogCart = ({ image, title, date, author, isNew }: TBlog) => {
             {/* Blog Content */}
             <div className="p-6">
                 <h2 className="mb-2 text-2xl font-bold text-[#3f4343] group-hover:text-[#fb5770] transition-colors duration-300">
-                    {title.length > 35 ? `${title?.slice(0,35)} ...` : title}
+                    {title.length > 35 ? `${title?.slice(0, 35)} ...` : title}
                 </h2>
 
                 {/* Author and Date */}
@@ -49,21 +59,22 @@ const BlogCart = ({ image, title, date, author, isNew }: TBlog) => {
                                 />
                             </svg>
                         </div>
-                        <span className="text-xl font-bold">{author}</span>
+                        <span className="text-xl font-bold">{user?.name}</span>
                     </div>
-                    <span>{date}</span>
+                    <span>{formattedDate}</span>
                 </div>
 
-                <div className="flex justify-end">
-                    <button
-                        style={{
-                            borderRadius: "8px",
-                        }}
-                        className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-8 rounded-lg h-11 focus:outline-none mt-4"
-                    >
-                        Read More
-                    </button>
-                </div>
+                <Link to={`/blogs/${_id}`}>
+                    <div className="flex justify-end">
+                        <button
+                            style={{
+                                borderRadius: "8px",
+                            }}
+                            className="text-sm font-medium border border-[#fb5770] bg-white text-[#fb5770] hover:bg-[#fb5770] hover:text-white px-8 rounded-lg h-11 focus:outline-none mt-4"
+                        >
+                            Read More
+                        </button>
+                    </div></Link>
             </div>
         </div>
     );

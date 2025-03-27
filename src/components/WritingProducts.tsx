@@ -3,10 +3,13 @@ import { TProduct } from "@/types";
 import { Link } from "react-router-dom";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useGetAllCategoryQuery } from "@/redux/features/category/categoryManagementApi";
 
 const WritingProducts = () => {
     const { data: products, isLoading } = useGetAllProductsQuery(undefined)
     const writingProducts = products?.data?.filter((product: TProduct) => product?.category?.name === 'Writing')
+    const { data: categories } = useGetAllCategoryQuery(undefined)
+    const writing = categories?.data?.find((item: any) => item?.name === "Writing")
     return (
         <div className="mx-4 md:my-32">
             <div className="flex items-center justify-between gap-8 mb-8">
@@ -25,6 +28,7 @@ const WritingProducts = () => {
                     <div className="flex flex-col items-center p-4 w-full xl:h-[600px] lg:h-[300px] md:h-[250px] h-full" style={{ backgroundImage: "url('https://img.freepik.com/premium-photo/digital-pen-writing-code-with-blue-light-effects-background-representing-ai-powered-content-writing-automated-content-generation-digital-content-creation_982248-11880.jpg?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid')", backgroundSize: "cover", backgroundPosition: "center", borderRadius: '8px' }} >
 
                         <h2 className="mt-8 text-2xl font-bold text-white md:mt-16 lg:text-4xl">Writing Accessories</h2>
+                        <Link to={`/allProducts?page=1&category=${writing?._id}`}>
                         <button
                             style={{
                                 borderRadius: "8px",
@@ -33,6 +37,7 @@ const WritingProducts = () => {
                         >
                             Shop now
                         </button>
+                        </Link>
                     </div>
 
                 </div>

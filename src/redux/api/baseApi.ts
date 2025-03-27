@@ -6,8 +6,8 @@ import { toast } from 'sonner';
 
 
 const baseQuery = fetchBaseQuery({
-    // baseUrl: 'https://stationery-shop-blond.vercel.app/api/v1',
-    baseUrl: 'http://localhost:5000/api/v1',
+    baseUrl: 'https://stationery-shop-blond.vercel.app/api/v1',
+    // baseUrl: 'http://localhost:5000/api/v1',
     credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
         const token = (getState() as RootState).auth.token;
@@ -25,11 +25,11 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
     let result = await baseQuery(args, api, extraOptions);
-    if(result?.error?.status === 404){
+    if (result?.error?.status === 404) {
         // toast.error(result.error?.data?.message)
         toast.error("Resource not found. The requested item does not exist.")
     }
-    if(result?.error?.status === 403){
+    if (result?.error?.status === 403) {
         // toast.error(result.error?.data?.message)
         toast.error("Forbidden. You don’t have permission to access this.")
     }
@@ -64,8 +64,8 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 export const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: baseQueryWithRefreshToken,
-    tagTypes : ['product','user','addedCart','order','category','addedFavorite'],
+    tagTypes: ['product', 'user', 'addedCart', 'order', 'category', 'addedFavorite', 'blog'],
     endpoints: () => ({}),
-    
+
 })
 
