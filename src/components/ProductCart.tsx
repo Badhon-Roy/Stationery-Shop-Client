@@ -1,17 +1,21 @@
 import { useAddToCartProductMutation } from "@/redux/features/product/addedCartManagementApi";
 import { TProduct, TUser } from "@/types";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useAppSelector } from "@/redux/hook";
 import { selectCurrentToken } from "@/redux/features/auth/authSlice";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 import { FiHeart } from "react-icons/fi";
 import { useAddToFavoriteProductMutation } from "@/redux/features/product/addedFavoriteManagementApi";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 type TProductCart = Pick<TProduct, '_id' | 'name' | 'image' | 'price' | 'inStock' | 'brand'>;
 
+
 const ProductCart = ({ product }: { product: TProductCart }) => {
+
     const { _id, name, image, inStock, brand, price } = product;
     const [addToCartProduct] = useAddToCartProductMutation();
     const [addToFavoriteProduct] = useAddToFavoriteProductMutation();
@@ -25,6 +29,10 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
     if (token) {
         user = jwtDecode(token);
     }
+
+    useEffect(() => {
+        AOS.init({ duration: 1000, once: true });
+    }, []);
 
     const handleAddToCart = async (e: React.MouseEvent) => {
         e.preventDefault();
@@ -66,7 +74,7 @@ const ProductCart = ({ product }: { product: TProductCart }) => {
     return (
         <div>
             <Link ref={linkRef} to={`/productDetails/${_id}`}>
-                <div style={{ borderRadius: '8px' }} className="relative overflow-hidden transition-all duration-500 transform bg-white shadow-xl hover:scale-105 hover:shadow-2xl">
+                <div data-aos="zoom-in-up" style={{ borderRadius: '8px' }} className="relative overflow-hidden transition-all duration-500 transform bg-white shadow-xl hover:scale-105 hover:shadow-2xl">
                     <button onClick={handleAddToFavorite} className="absolute top-2 right-2 text-[#fb5770] text-xl font-bold">
                         <FiHeart />
                     </button>

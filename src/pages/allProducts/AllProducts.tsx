@@ -7,6 +7,9 @@ import { useLocation } from "react-router-dom";
 import { TProduct } from "@/types";
 import ProductPagination from "@/components/Pagination";
 import Loading from "@/components/loading/Loading";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 
 const useQueryParams = () => {
     const location = useLocation();
@@ -21,6 +24,9 @@ const AllProducts = () => {
     const brand = queryParams.get('brand');
     const minPrice = queryParams.get('minPrice');
     const maxPrice = queryParams.get('maxPrice');
+    useEffect(() => {
+        AOS.init({ duration: 1000, once: true });
+    }, []); 
 
     // Fetch products with dynamic page and category filters
     const { data: stationeryProducts, isLoading: isProductsLoading } = useGetAllProductsQuery([
@@ -34,13 +40,15 @@ const AllProducts = () => {
     if(isProductsLoading){
         return <Loading/>
     }
+    
+    
 
     return (
         <div className="px-4 my-8">
-            <h2 className="font-bold text-center sectionTitle sm:text-2xl md:text-3xl lg:text-4xl">
+            <h2 data-aos="fade-right" className="sectionTitle">
                 Our <span className="primaryColor">All</span> Products
             </h2>
-            <p className="mt-4 text-center sectionSubtitle sm:text-base md:text-lg lg:text-xl">
+            <p data-aos="zoom-in" className="mt-4 text-center sectionSubtitle">
                 Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.
             </p>
 

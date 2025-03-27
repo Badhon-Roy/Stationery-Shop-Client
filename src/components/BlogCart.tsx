@@ -13,7 +13,7 @@ const BlogCart = ({ blog }: { blog: TBlog }) => {
     const formattedDate = `${day}/${month}/${year}`;
 
     return (
-        <div className="relative overflow-hidden transition-all duration-300 bg-white shadow-lg group rounded-2xl hover:shadow-2xl">
+        <div className="relative overflow-hidden transition-all duration-300 bg-white shadow-lg group rounded-2xl hover:shadow-2xl" data-aos="zoom-in-up">
             <div className="relative overflow-hidden rounded-t-2xl">
                 <img
                     src={thumbnail}

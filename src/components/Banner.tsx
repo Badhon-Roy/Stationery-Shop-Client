@@ -4,9 +4,17 @@ import BookImage from "../assets/images/banner.png"
 import { Link } from "react-router-dom";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+
 
 const Banner = () => {
     const { data: categories, isLoading } = useGetAllCategoryQuery(undefined);
+
+    useEffect(() => {
+        AOS.init({ duration: 1000, once: true });
+    }, []);
 
     return (
         <div>
@@ -26,8 +34,8 @@ const Banner = () => {
                                 <div key={category?._id}>
                                     <Link to={`/allProducts?page=1&category=${category?._id}`}>
                                         <ul className="flex items-center gap-2 px-4 py-2 border hover:text-[#fb5770] hover:bg-[#fb577029]">
-                                            <img className="w-6" src={category?.image} alt={category?.name} />
-                                            <li className="lg:text-[16px] text-sm">{category?.name}</li>
+                                            <img data-aos="fade-right" className="w-6" src={category?.image} alt={category?.name} />
+                                            <li data-aos="fade-right" className="lg:text-[16px] text-sm">{category?.name}</li>
                                         </ul>
                                     </Link>
                                 </div>
@@ -36,7 +44,7 @@ const Banner = () => {
                     </div>
                 </div>
                 <div className="md:w-3/4 px-4 lg:px-0 bg-[#fb5770] mt-8 lg:flex flex-row-reverse items-center rounded">
-                    <div className="flex items-center justify-center flex-1">
+                    <div data-aos="fade-down" className="flex items-center justify-center flex-1">
                         <img
                             className="lg:w-[600px] md:w-[400px] object-cover "
                             src={BookImage}
@@ -45,15 +53,15 @@ const Banner = () => {
                         />
                     </div>
                     <div className="flex-1 p-8 lg:p-8 md:p-0 lg:pl-16">
-                        <h1 className="text-3xl font-bold tracking-tight text-center text-gray-800 md:text-4xl lg:text-5xl lg:text-start">
+                        <h1 data-aos="fade-right" className="text-3xl font-bold tracking-tight text-center text-gray-800 md:text-4xl lg:text-5xl lg:text-start">
                             Premium <span className="text-white">Stationery </span>
                             Supplies
                         </h1>
-                        <p className="my-4 mb-8 text-center text-white md:text-lg lg:text-start">
+                        <p data-aos="fade-right" className="my-4 mb-8 text-center text-white md:text-lg lg:text-start">
                             Discover our curated collection of high-quality stationery essentials. From premium notebooks to luxury
                             pens, we have everything you need to make your ideas come to life.
                         </p>
-                        <div className="flex justify-center lg:justify-start">
+                        <div data-aos="zoom-in" className="flex justify-center lg:justify-start">
                            <Link to={'/allProducts'}>
                            <button
                                 style={{
@@ -70,30 +78,30 @@ const Banner = () => {
                 </div>
             </div>
             <div className="grid grid-cols-2 gap-2 p-4 my-16 md:gap-4 lg:grid-cols-4">
-                <div className="items-center justify-center gap-4 border-r-2 md:flex">
-                    <img className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/3806/3806012.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
-                    <div className="text-center md:text-start">
+                <div  className="items-center justify-center gap-4 border-r-2 md:flex">
+                    <img data-aos="zoom-out-up" className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/3806/3806012.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
+                    <div data-aos="fade-right" className="text-center md:text-start">
                         <h2 className="text-gray-700 md:font-bold md:text-lg">Fast delivery</h2>
                         <p className="md:text-[16px] text-sm">For all orders over $120</p>
                     </div>
                 </div>
-                <div className="items-center justify-center gap-4 md:flex lg:border-r-2">
-                    <img className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/2059/2059129.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
-                    <div className="text-center md:text-start">
+                <div  className="items-center justify-center gap-4 md:flex lg:border-r-2">
+                    <img data-aos="zoom-out-up" className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/2059/2059129.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
+                    <div data-aos="fade-right" className="text-center md:text-start">
                         <h2 className="text-gray-700 md:font-bold md:text-lg">Safe Payments</h2>
                         <p className="md:text-[16px] text-sm">100% secure payment</p>
                     </div>
                 </div>
-                <div className="items-center justify-center gap-4 border-r-2 md:flex">
-                    <img className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/2229/2229248.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
-                    <div className="text-center md:text-start">
+                <div  className="items-center justify-center gap-4 border-r-2 md:flex">
+                    <img data-aos="zoom-out-up" className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/2229/2229248.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
+                    <div data-aos="fade-right" className="text-center md:text-start">
                         <h2 className="text-gray-700 md:font-bold md:text-lg"> Discount Coupons</h2>
                         <p className="md:text-[16px] text-sm">Enjoy Huge Promotions</p>
                     </div>
                 </div>
-                <div className="items-center justify-center gap-4 md:flex">
-                    <img className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/4961/4961759.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
-                    <div className="text-center md:text-start">
+                <div  className="items-center justify-center gap-4 md:flex">
+                    <img data-aos="zoom-out-up" className="w-8 mx-auto xl:mx-0 lg:mx-auto md:mx-0 md:w-16" src="https://cdn-icons-png.freepik.com/256/4961/4961759.png?ga=GA1.1.2122364497.1742731770&semt=ais_hybrid" alt="" />
+                    <div data-aos="fade-right" className="text-center md:text-start">
                         <h2 className="text-gray-700 md:font-bold md:text-lg">Quality Support</h2>
                         <p className="md:text-[16px] text-sm">Dedicated 24/7 support</p>
                     </div>
