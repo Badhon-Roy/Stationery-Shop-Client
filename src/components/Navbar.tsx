@@ -365,6 +365,45 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <nav className="flex flex-col px-6 mt-20 space-y-6 font-bold">
+
+            <div className="relative">
+              {/* Search Bar */}
+              <form onSubmit={handleSearch} className="flex items-center border-2 border-[#fb5770] rounded-md">
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setSuggestionsVisible(e.target.value.length > 0); // Show suggestions when query is not empty
+                  }}
+                  placeholder="Search..."
+                  className="flex-grow px-4 py-2 w-[200px] border-none outline-none"
+                />
+              </form>
+
+              {/* Auto-Suggestions Dropdown */}
+              {isSuggestionsVisible && query && filteredProducts && filteredProducts.length > 0 && (
+                <ul className="absolute w-full mt-2 overflow-y-auto bg-white border border-gray-300 rounded-md shadow-lg max-h-48">
+                  {filteredProducts.map((product) => (
+                    <li
+                      key={product._id}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleSelectProduct(product._id)} // Navigate & clear input
+                    >
+                      {product.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* If there are no matching products */}
+              {isSuggestionsVisible && query && (!filteredProducts || filteredProducts.length === 0) && (
+                <div className="absolute w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
+                  <p className="px-4 py-2 text-gray-500">No products found</p>
+                </div>
+              )}
+            </div>
+
             {navbarLinks?.map(
               (item, index) => (
                 <NavLink
@@ -380,6 +419,20 @@ const Navbar = () => {
                 </NavLink>
               )
             )}
+
+            <NavLink
+              to='/allCategory'
+              onClick={handleNavClick}
+              className={({ isActive }) =>
+                `underline-animation ${isActive ? "text-[#fb5770] font-bold" : ""
+                }`
+              }
+            >
+              Categories
+            </NavLink>
+
+
+
             {
               user && (user as TUser)?.email ? (
                 <>

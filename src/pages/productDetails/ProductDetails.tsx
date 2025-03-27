@@ -77,13 +77,18 @@ const ProductDetails = () => {
         }
     };
 
-    const handleBuyNow = () => {
-        const orderInfo = {
-            email: user?.email,
-            products: [{ product: _id , quantity : 1}]
-          };
-        
-          navigate("/placeOrder", { state: { orderInfo } });
+    const handleBuyNow = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (!user || !((user as TUser)?.email)) {
+            navigate("/login", { state: { from: location } });
+        } else {
+            const orderInfo = {
+                email: user?.email,
+                products: [{ product: _id, quantity: 1 }]
+            };
+
+            navigate("/placeOrder", { state: { orderInfo } });
+        }
     }
 
 

@@ -13,6 +13,7 @@ import UserData from "@/pages/admin/userManagement/UserData";
 import AllProducts from "@/pages/allProducts/AllProducts";
 import BlogsPage from "@/pages/blog/Blog";
 import BlogDetails from "@/pages/blogDetails/BlogDetails";
+import AllCategory from "@/pages/category/AllCategory";
 import Dashboard from "@/pages/dashboard/Dashboard";
 import Home from "@/pages/home/Home";
 import Login from "@/pages/login/Login";
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: '/blogs',
                 element: <BlogsPage />
+            },
+            {
+                path: '/allCategory',
+                element: <AllCategory />
             },
             {
                 path: '/blogs/:id',

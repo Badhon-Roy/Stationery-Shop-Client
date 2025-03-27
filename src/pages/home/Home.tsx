@@ -9,22 +9,8 @@ import "aos/dist/aos.css";
 
 const Home = () => {
   useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-      mirror: true,
-    });
-
-    const handleScroll = () => {
-      AOS.refresh(); // Refresh AOS on scroll to re-trigger animations
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+         AOS.init({ duration: 1000, once: true });
+     }, []);
   return (
     <div>
       <Banner />
