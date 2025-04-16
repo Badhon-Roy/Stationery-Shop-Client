@@ -1,50 +1,89 @@
-# React + TypeScript + Vite
+<p align="center">
+  <img src="https://i.postimg.cc/Y9DPW857/stationery-shop.jpg" alt="Stationery Shop Banner" width="100%" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# 🛍️ Stationery Shop – Full Stack Web Application
 
-Currently, two official plugins are available:
+A full-featured stationery shop built with **React**, **TypeScript**, and **Node.js**, offering user authentication, product and order management, and a beautiful, responsive UI. Designed to handle real-time product filtering, cart management, and role-based dashboards using **RTK Query**, **JWT**, and **MongoDB**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Live Demo
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+🔗 [https://stationery-shop-client-sandy.vercel.app](https://stationery-shop-client-sandy.vercel.app)
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 📦 Tech Stack
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+| Frontend            | Backend              | Tools & Features             |
+|---------------------|----------------------|------------------------------|
+| React + TypeScript  | Node.js + Express.js | JWT Authentication           |
+| Redux Toolkit Query | MongoDB              | RESTful API (CRUD Support)   |
+| React Router DOM    | Mongoose             | Toast Notifications          |
+| Tailwind CSS        |                     | Responsive UI                |
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+---
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## 🔧 Features
+
+### ✅ User Authentication
+- Role-based login with JWT (admin / user)
+- Secure password hashing with bcrypt
+- Token storage in cookies
+- Logout clears auth token
+
+### 🏠 Public Pages
+- **Home** with banner, featured products, blogs etc
+- **Shop** page with:
+  - Search (title, author, category)
+  - Filter (category, price range, availability)
+- **Product Details** page
+- **Blog** page
+- **About** page
+- **Footer** with links, social icons, contact info
+
+### 🛒 Cart & Orders (Private Route)
+- Add to Cart with quantity check
+- View and remove items
+- Place orders
+- Order summary + total price
+- Payment integration via SurjoPay
+
+### 🛠️ Dashboard
+- **Admin**
+  - Manage products (Add / Edit / Delete)
+  - Manage orders (Update status)
+  - Manage users
+- **User**
+  - View orders
+  - Update profile info
+
+---
+
+## 🌐 API Integration
+
+- **RESTful API** built using Express.js & MongoDB
+- **RTK Query** handles all client-side data fetching with built-in caching and error handling
+- **Endpoints include:**
+  - `/api/products`
+  - `/api/users`
+  - `/api/orders`
+  - `/api/auth`
+
+---
+
+## 🧪 Error Handling
+
+- Friendly form & auth validation messages
+- Fallbacks for invalid login / registration
+- Toast notifications for key actions (login, order placed, etc.)
+- Loading spinners during API calls
+
+---
+
+## 📱 Responsive Design
+
+- Mobile-first layout
+- Tailwind CSS for fast and flexible styling
+- Clean and consistent UI across devices
