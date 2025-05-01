@@ -45,19 +45,19 @@ const AddedFavorites = () => {
             <p className="sectionSubtitle">Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.</p>
             <div className="my-8">
                 {
-                    addedFavorite?.data?.length > 0 ? <div className="grid gap-8 md:grid-cols-2">
+                    addedFavorite?.data?.length > 0 ? <div className="grid gap-8 md:grid-cols-3">
                         {
                             addedFavorite?.data?.map((item: any) => (
-                                <div className="border md:flex" key={item?._id}>
+                                <div className="flex border" key={item?._id}>
                                     {/* Item Image */}
-                                    <div className="flex items-center justify-center object-cover">
-                                        <img src={item?.product?.image} alt={item?.product?.name} className="object-cover md:w-[250px] w-full h-[150px] md:h-[200px] rounded-lg" />
+                                    <div className="flex items-center justify-center flex-1 object-cover">
+                                        <img src={item?.product?.image} alt={item?.product?.name} className="object-cover w-full h-[150px] md:h-[200px] rounded-lg" />
                                     </div>
 
                                     {/* Item Details */}
-                                    <div className="p-4">
+                                    <div className="flex-1 p-4">
                                         <div className="flex items-center justify-between gap-8">
-                                            <h1 className="text-xl font-semibold text-gray-800">{item?.product?.name}</h1>
+                                            <h1 className="font-semibold text-gray-800 md:text-xl">{item?.product?.name}</h1>
                                             <button onClick={() => handleDelete(item?._id)} className="text-red-500 hover:text-red-700">
                                                 <MdDelete className="text-3xl" />
                                             </button>

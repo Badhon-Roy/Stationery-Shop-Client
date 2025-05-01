@@ -26,7 +26,7 @@ const AllProducts = () => {
     const maxPrice = queryParams.get('maxPrice');
     useEffect(() => {
         AOS.init({ duration: 1000, once: true });
-    }, []); 
+    }, []);
 
     // Fetch products with dynamic page and category filters
     const { data: stationeryProducts, isLoading: isProductsLoading } = useGetAllProductsQuery([
@@ -37,11 +37,11 @@ const AllProducts = () => {
         { name: 'page', value: currentPage },
         { name: 'limit', value: limit }
     ]);
-    if(isProductsLoading){
-        return <Loading/>
+    if (isProductsLoading) {
+        return <Loading />
     }
-    
-    
+
+
 
     return (
         <div className="px-4 my-8">
@@ -83,8 +83,13 @@ const AllProducts = () => {
 
                         {/* Pagination */}
                         <ProductPagination totalPage={stationeryProducts?.meta?.totalPage || 1} />
-                    </div> : <div className="w-1/2 mx-auto mt-16">
-                        <h2 className="text-2xl font-bold text-center">No Product Found</h2>
+                    </div> : <div className="flex items-center justify-center w-full px-4 bg-gray-100">
+                        <div className="text-center">
+                            <h2 className="mb-4 text-4xl font-bold text-gray-800">No Product Found</h2>
+                            <p className="mb-6 text-lg text-gray-600">
+                                Sorry, we couldn't find any products that match your search or selection.
+                            </p>
+                        </div>
                     </div>
                 }
             </div>
