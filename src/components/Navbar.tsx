@@ -297,7 +297,7 @@ const Navbar = () => {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       {currentUser?.data && currentUser.data.length > 0 && (
-                        <img className="w-[50] h-[50px] rounded-full" src={currentUser.data[0].photoUrl} alt="User profile" />
+                        <img className="w-[50] h-[50px] rounded-full border border-[#fb5770]" src={currentUser.data[0].photoUrl} alt="User profile" />
                       )}
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56 p-4 mr-32 shadow-lg bg-white/10 backdrop-blur-lg">

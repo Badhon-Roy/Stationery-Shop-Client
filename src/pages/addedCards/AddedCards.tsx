@@ -141,7 +141,7 @@ const AddedCards = () => {
 
     return (
         <div className="mx-4">
-            <h2 className="font-bold sectionTitle">My<span className="primaryColor"> Added</span> Products</h2>
+            <h2 className="mt-8 font-bold sectionTitle">My<span className="primaryColor"> Added</span> Products</h2>
             <p className="sectionSubtitle">Browse through our diverse collection of high-quality products, meticulously curated to cater to all your needs, offering the perfect balance of style, function, and durability for every occasion.</p>
 
             <div>
@@ -155,39 +155,37 @@ const AddedCards = () => {
                                 <div className="p-5 bg-white rounded-lg shadow-md">
                                     {
                                         addedCartProduct?.data[0]?.products?.map((item: any) => (
-                                            <div className="pb-5 mb-5 border-b md:flex" key={item._id}>
+                                            <div className="flex pb-5 mb-5 border-b" key={item._id}>
                                                 {/* Item Image */}
-                                                <div className="flex items-center justify-center md:w-3/12 ">
-                                                    <img src={item?.productId?.image} alt={item?.productId?.name} className="object-cover w-full h-[150px] rounded-lg" />
+                                                <div className="flex items-center justify-center w-5/12 md:w-3/12">
+                                                    <img src={item?.productId?.image} alt={item?.productId?.name} className="object-cover w-[250px] md:w-full h-[150px] rounded-lg" />
                                                 </div>
 
                                                 {/* Item Details */}
-                                                <div className="pl-4 md:w-5/12">
-                                                    <h1 className="font-semibold text-gray-800 xl:text-xl">{item?.productId?.name}</h1>
-                                                    <h2 className="mt-2 text-lg text-gray-600">{item?.productId?.brand}</h2>
+                                                <div className="w-7/12 pl-4 md:w-5/12">
+                                                    <h1 className="font-semibold text-gray-800 xl:text-xl md:text-[16px] text-sm">{item?.productId?.name}</h1>
+                                                    <h2 className="mt-2 text-sm text-gray-600 md:text-lg">{item?.productId?.brand}</h2>
                                                     <p className="mt-2 text-sm text-gray-500">Price: {item?.productId?.price} TK</p>
                                                     <div className="flex items-center gap-4 mt-4">
                                                         <button onClick={() => handleDelete(item?.productId?._id)} className="text-red-500 hover:text-red-700">
                                                             <MdDelete className="text-3xl" />
                                                         </button>
-                                                        <button onClick={() => handleAddToFavorite(item?.productId?._id)} className="flex items-center text-pink-500 hover:text-pink-700">
+                                                        <button onClick={() => handleAddToFavorite(item?.productId?._id)} className="items-center hidden text-pink-500 md:flex hover:text-pink-700">
                                                             <FaRegHeart className="text-2xl" />
                                                             <span className="ml-2">Add to Wishlist</span>
                                                         </button>
                                                     </div>
-                                                    <h2 className="mt-2 text-sm text-red-600">Only {item?.productId?.quantity} copies available</h2>
-                                                </div>
+                                                    <h2 className="mt-2 text-[12px] text-red-600 md:text-sm">Only {item?.productId?.quantity} copies available</h2>
+                                                    
 
-
-                                                {/* Quantity Control */}
-                                                <div className="flex items-center justify-center gap-2 mt-4 md:w-2/12 md:mt-0">
+                                                    <div className="flex items-center justify-center gap-2 mt-4 md:hidden md:mt-0">
                                                     {/* Decrease Quantity Button */}
                                                     <button
                                                         onClick={() => handleClick(item?.productId?._id, -1)}
-                                                        className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400"
+                                                        className="px-2 py-1 bg-gray-200 rounded-lg md:py-2 md:px-4 hover:bg-gray-300 disabled:bg-gray-400"
                                                         disabled={item?.quantity === 1 || isDisabled}
                                                     >
-                                                        <FaMinus className="text-xl text-gray-700" />
+                                                        <FaMinus className="text-sm text-gray-700 md:text-xl" />
                                                     </button>
 
 
@@ -197,10 +195,41 @@ const AddedCards = () => {
                                                     {/* Increase Quantity Button */}
                                                     <button
                                                         onClick={() => handleClick(item?.productId?._id, 1)}
-                                                        className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 disabled:bg-gray-400"
+                                                        className="px-2 py-1 bg-gray-200 rounded-lg md:py-2 md:px-4 hover:bg-gray-300 disabled:bg-gray-400"
                                                         disabled={item?.quantity === 10 || isDisabled}
                                                     >
-                                                        <FaPlus className="text-xl text-gray-700" />
+                                                        <FaPlus className="text-sm text-gray-700 md:text-xl" />
+                                                    </button>
+
+                                                    {isDisabled && <p className="text-sm text-gray-500">Wait {timeRemaining}s</p>}
+                                                </div>
+
+
+                                                </div>
+
+
+                                                {/* Quantity Control */}
+                                                <div className="items-center justify-center hidden gap-2 mt-4 md:flex md:w-2/12 md:mt-0">
+                                                    {/* Decrease Quantity Button */}
+                                                    <button
+                                                        onClick={() => handleClick(item?.productId?._id, -1)}
+                                                        className="px-2 py-1 bg-gray-200 rounded-lg md:py-2 md:px-4 hover:bg-gray-300 disabled:bg-gray-400"
+                                                        disabled={item?.quantity === 1 || isDisabled}
+                                                    >
+                                                        <FaMinus className="text-sm text-gray-700 md:text-xl" />
+                                                    </button>
+
+
+                                                    {/* Display Quantity */}
+
+                                                    <p>{item?.quantity}</p>
+                                                    {/* Increase Quantity Button */}
+                                                    <button
+                                                        onClick={() => handleClick(item?.productId?._id, 1)}
+                                                        className="px-2 py-1 bg-gray-200 rounded-lg md:py-2 md:px-4 hover:bg-gray-300 disabled:bg-gray-400"
+                                                        disabled={item?.quantity === 10 || isDisabled}
+                                                    >
+                                                        <FaPlus className="text-sm text-gray-700 md:text-xl" />
                                                     </button>
 
                                                     {isDisabled && <p className="text-sm text-gray-500">Wait {timeRemaining}s</p>}
@@ -209,8 +238,8 @@ const AddedCards = () => {
 
 
                                                 {/* Item Price */}
-                                                <div className="flex items-center justify-center gap-4 mt-4 ms-auto md:mt-0" >
-                                                    <p className="text-lg font-semibold text-[#fb5770]">{(item?.productId?.price * item?.quantity).toFixed(2)} TK</p>
+                                                <div className="items-center justify-center hidden gap-4 mt-4 md:flex ms-auto md:mt-0" >
+                                                    <p className="md:text-lg font-semibold text-[#fb5770]">{(item?.productId?.price * item?.quantity).toFixed(2)} TK</p>
 
                                                 </div>
                                             </div>

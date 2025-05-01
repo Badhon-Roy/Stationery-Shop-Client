@@ -7,6 +7,8 @@ const FilterSidebar = () => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const selectedCategory = searchParams.get('category');
+    const selectedPage = searchParams.get('page');
+    console.log(selectedPage);
     const minPrice = searchParams.get('minPrice') ? Number(searchParams.get('minPrice')) : '';
     const maxPrice = searchParams.get('maxPrice') ? Number(searchParams.get('maxPrice')) : '';
 
@@ -88,8 +90,17 @@ const FilterSidebar = () => {
                             <Checkbox
                                 checked={selectedCategory === category?._id}
                                 onClick={() => {
+                                    const newParams = new URLSearchParams(searchParams);
                                     const newCategory = selectedCategory === category?._id ? null : category?._id;
-                                    updateQueryParams('category', newCategory);
+                                
+                                    if (newCategory) {
+                                        newParams.set('category', newCategory);
+                                    } else {
+                                        newParams.delete('category');
+                                    }
+                                
+                                    newParams.set('page', '1');
+                                    setSearchParams(newParams);
                                 }}
                                 id={category?._id}
                             />

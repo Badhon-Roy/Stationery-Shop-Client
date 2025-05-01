@@ -65,8 +65,8 @@ const OrderPlace = () => {
     };
 
     return (
-        <div className='flex gap-8 my-16'>
-            <div className="w-2/3 p-6 bg-white border rounded-lg shadow-lg">
+        <div className='gap-8 mx-4 my-16 md:flex'>
+            <div className="p-6 bg-white border rounded-lg shadow-lg md:w-2/3">
                 <div className="text-center">
                     <h2 className="text-2xl font-bold text-gray-800">
                         Place Your <span className="text-[#fb5770]">Order</span>
@@ -234,16 +234,19 @@ const OrderPlace = () => {
                     </div>
                 </form>
             </div>
-            <div className='grid w-1/3 gap-8 lg:grid-cols-2 xl:grid-cols-3'>
-                {
-                    fetchedProducts?.map((item: any, index: number) => (
-                        <div key={index} className='border h-[200px]'>
-                            <img className='w-full h-[100px] object-cover' src={item?.data?.image} alt="" />
-                            <h2 className='px-4 py-2'>{item?.data?.name}</h2>
-                        </div>
-                    ))
-                }
+            <div className='mt-8 md:w-1/3 md:mt-0'>
+                <h2 className='text-lg text-center text-[#fb5770] mb-4 underline'>View Your Product Order</h2>
+                <div className='grid grid-cols-2 gap-4 lg:gap-8 xl:grid-cols-3'>
+                    {
+                        fetchedProducts?.map((item: any, index: number) => (
+                            <div key={index} className='border h-[200px]'>
+                                <img className='w-full h-[100px] object-cover' src={item?.data?.image} alt="" />
+                                <h2 className='px-4 py-2 lg:text-[16px] text-sm'>{item?.data?.name}</h2>
+                            </div>
+                        ))
+                    }
 
+                </div>
             </div>
         </div>
     );
